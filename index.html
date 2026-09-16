@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -69,7 +68,9 @@
                     <h1 class="text-lg font-bold bg-gradient-to-r from-white via-slate-200 to-rose-400 bg-clip-text text-transparent">
                         Kanji Flashcards
                     </h1>
-                    <p class="text-xs text-slate-400">Kosakata N5 - N4 (55 Kata)</p>
+                    <p id="vocab-total-header" class="text-xs text-slate-400">
+    Kosakata N2
+</p>
                 </div>
             </div>
 
@@ -93,7 +94,38 @@
         
         <!-- Flashcard View Tab -->
         <div id="tab-cards" class="w-full flex flex-col items-center max-w-xl">
-            
+         <!-- Filter Deck -->
+<div class="w-full bg-slate-800/80 p-3 rounded-2xl border border-slate-700/60 mb-4 backdrop-blur-sm">
+    <div class="text-xs text-slate-400 font-semibold mb-2 px-1">
+        Pilih Deck
+    </div>
+
+    <div class="grid grid-cols-3 gap-2">
+        <button
+            id="filter-all"
+            onclick="changeDeckFilter('all')"
+            class="deck-filter-btn px-2 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-indigo-600 text-white shadow-md transition-all">
+            <div>Semua</div>
+            <div id="count-all" class="text-[11px] opacity-80">0</div>
+        </button>
+
+        <button
+            id="filter-unmastered"
+            onclick="changeDeckFilter('unmastered')"
+            class="deck-filter-btn px-2 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-700/60 text-slate-300 hover:text-white transition-all">
+            <div>🔴 Belum Paham</div>
+            <div id="count-unmastered" class="text-[11px] opacity-80">0</div>
+        </button>
+
+        <button
+            id="filter-mastered"
+            onclick="changeDeckFilter('mastered')"
+            class="deck-filter-btn px-2 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-700/60 text-slate-300 hover:text-white transition-all">
+            <div>🟢 Sudah Paham</div>
+            <div id="count-mastered" class="text-[11px] opacity-80">0</div>
+        </button>
+    </div>
+</div>   
             <!-- Progress Bar & Counter -->
             <div class="w-full bg-slate-800/80 p-4 rounded-2xl border border-slate-700/60 mb-6 backdrop-blur-sm">
                 <div class="flex justify-between items-center text-xs font-semibold text-slate-400 mb-2">
@@ -552,12 +584,21 @@
         ];
 
         let deck = [...rawVocabData];
-        let currentIndex = 0;
-        let isFlipped = false;
-        let masteredSet = new Set();
-        let currentQuizIndex = 0;
-        let quizScore = 0;
-        let quizOptions = [];
+let currentIndex = 0;
+let isFlipped = false;
+
+// Menyimpan Kanji yang sudah dipahami
+let masteredSet = new Set();
+
+// Filter deck yang sedang digunakan
+// all = semua
+// unmastered = belum paham
+// mastered = sudah paham
+let currentDeckFilter = 'all';
+
+let currentQuizIndex = 0;
+let quizScore = 0;
+let quizOptions = [];
 
         // DOM Elements
         const flashcardEl = document.getElementById('flashcard');
@@ -573,39 +614,120 @@
 
         // Initialize App
         window.addEventListener('DOMContentLoaded', () => {
-            loadMasteredFromStorage();
-            updateCardDisplay();
-            renderVocabGrid();
-            initQuiz();
-            setupKeyboardListeners();
-        });
+    loadMasteredFromStorage();
+
+    // Pastikan deck pertama kali berisi semua kosakata
+    currentDeckFilter = 'all';
+    updateDeck();
+
+    // Update jumlah
+    updateDeckCounts();
+
+    // Update tombol filter
+    updateFilterButtons();
+
+    // Tampilkan kartu
+    updateCardDisplay();
+
+    // Daftar kosakata
+    renderVocabGrid();
+
+    // Quiz
+    initQuiz();
+
+    // Keyboard
+    setupKeyboardListeners();
+});
 
         function updateCardDisplay() {
-            // Reset card orientation without animation flicker
-            isFlipped = false;
-            flashcardEl.classList.remove('rotate-y-180');
+    // Jika deck kosong
+    if (deck.length === 0) {
+        isFlipped = false;
+        flashcardEl.classList.remove('rotate-y-180');
 
-            const item = deck[currentIndex];
-            cardKanjiEl.textContent = item.kanji;
-            cardReadingEl.textContent = item.reading;
-            cardMeaningEl.textContent = item.meaning;
-            cardKanjiSubEl.textContent = `Kanji: ${item.kanji} (${item.reading})`;
+        cardKanjiEl.textContent = '—';
+        cardReadingEl.textContent = '—';
+        cardMeaningEl.textContent = 'Tidak ada kosakata';
+        cardKanjiSubEl.textContent = 'Belum ada kartu';
 
-            // Counter & Progress
-            cardCounterEl.textContent = `Kartu ${currentIndex + 1} dari ${deck.length}`;
-            const progress = ((currentIndex + 1) / deck.length) * 100;
-            progressBarEl.style.width = `${progress}%`;
-            masteredCountEl.textContent = `${masteredSet.size} Dipahami`;
+        cardCounterEl.textContent = 'Tidak ada kartu';
 
-            // Master button state
-            if (masteredSet.has(item.kanji)) {
-                masterBtnEl.classList.add('border-emerald-500', 'bg-emerald-950/40', 'text-emerald-400');
-                masterBtnTextEl.textContent = 'Sudah Dipahami';
-            } else {
-                masterBtnEl.classList.remove('border-emerald-500', 'bg-emerald-950/40', 'text-emerald-400');
-                masterBtnTextEl.textContent = 'Tandai Paham';
-            }
-        }
+        progressBarEl.style.width = '0%';
+
+        const masteredCount = rawVocabData.filter(item =>
+            masteredSet.has(item.kanji)
+        ).length;
+
+        masteredCountEl.textContent = `${masteredCount} Dipahami`;
+
+        masterBtnEl.classList.remove(
+            'border-emerald-500',
+            'bg-emerald-950/40',
+            'text-emerald-400'
+        );
+
+        masterBtnTextEl.textContent = 'Tidak Ada Kartu';
+
+        return;
+    }
+
+    // Reset kartu ke posisi depan
+    isFlipped = false;
+    flashcardEl.classList.remove('rotate-y-180');
+
+    const item = deck[currentIndex];
+
+    cardKanjiEl.textContent = item.kanji;
+    cardReadingEl.textContent = item.reading;
+    cardMeaningEl.textContent = item.meaning;
+    cardKanjiSubEl.textContent =
+        `Kanji: ${item.kanji} (${item.reading})`;
+
+    // Counter
+    cardCounterEl.textContent =
+        `Kartu ${currentIndex + 1} dari ${deck.length}`;
+
+    // Progress bar
+    const progress =
+        ((currentIndex + 1) / deck.length) * 100;
+
+    progressBarEl.style.width = `${progress}%`;
+
+    // Jumlah sudah dipahami
+    const masteredCount = rawVocabData.filter(item =>
+        masteredSet.has(item.kanji)
+    ).length;
+
+    masteredCountEl.textContent =
+        `${masteredCount} Dipahami`;
+
+    // Status tombol
+    if (masteredSet.has(item.kanji)) {
+
+        masterBtnEl.classList.add(
+            'border-emerald-500',
+            'bg-emerald-950/40',
+            'text-emerald-400'
+        );
+
+        masterBtnTextEl.textContent =
+            'Sudah Dipahami';
+
+    } else {
+
+        masterBtnEl.classList.remove(
+            'border-emerald-500',
+            'bg-emerald-950/40',
+            'text-emerald-400'
+        );
+
+        masterBtnTextEl.textContent =
+            'Tandai Paham';
+    }
+
+    // Update jumlah di filter
+    updateDeckCounts();
+}
 
         function flipCard() {
             isFlipped = !isFlipped;
@@ -617,55 +739,103 @@
         }
 
         function nextCard() {
-            if (currentIndex < deck.length - 1) {
-                currentIndex++;
-            } else {
-                currentIndex = 0; // Loop back
-            }
-            updateCardDisplay();
-        }
+    if (deck.length === 0) return;
 
+    if (currentIndex < deck.length - 1) {
+        currentIndex++;
+    } else {
+        currentIndex = 0;
+    }
+
+    updateCardDisplay();
+}
         function prevCard() {
-            if (currentIndex > 0) {
-                currentIndex--;
-            } else {
-                currentIndex = deck.length - 1; // Loop to end
-            }
-            updateCardDisplay();
-        }
+    if (deck.length === 0) return;
+
+    if (currentIndex > 0) {
+        currentIndex--;
+    } else {
+        currentIndex = deck.length - 1;
+    }
+
+    updateCardDisplay();
+}
 
         function shuffleCards() {
-            // Fisher-Yates shuffle algorithm
-            for (let i = deck.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [deck[i], deck[j]] = [deck[j], deck[i]];
-            }
-            currentIndex = 0;
-            updateCardDisplay();
-        }
+    if (deck.length === 0) return;
+
+    // Fisher-Yates shuffle
+    for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [deck[i], deck[j]] =
+        [deck[j], deck[i]];
+    }
+
+    currentIndex = 0;
+
+    updateCardDisplay();
+}
 
         function toggleMastered() {
-            const currentKanji = deck[currentIndex].kanji;
-            if (masteredSet.has(currentKanji)) {
-                masteredSet.delete(currentKanji);
-            } else {
-                masteredSet.add(currentKanji);
-            }
-            saveMasteredToStorage();
-            updateCardDisplay();
-            renderVocabGrid();
+    // Jangan melakukan apa-apa kalau deck kosong
+    if (deck.length === 0) return;
+
+    const currentKanji = deck[currentIndex].kanji;
+
+    if (masteredSet.has(currentKanji)) {
+        // Sudah paham → kembalikan menjadi belum paham
+        masteredSet.delete(currentKanji);
+    } else {
+        // Belum paham → tandai sudah paham
+        masteredSet.add(currentKanji);
+    }
+
+    // Simpan ke localStorage
+    saveMasteredToStorage();
+
+    // Perbarui deck berdasarkan filter yang aktif
+    updateDeck();
+
+    // Kalau deck masih memiliki kartu
+    if (deck.length > 0) {
+
+        // Kalau kartu yang sedang dibuka sudah keluar dari
+        // filter, index disesuaikan
+        if (currentIndex >= deck.length) {
+            currentIndex = deck.length - 1;
         }
+    } else {
+        currentIndex = 0;
+    }
+
+    updateDeckCounts();
+    updateFilterButtons();
+    updateCardDisplay();
+    renderVocabGrid();
+}
 
         function resetProgress() {
-            if (confirm('Apakah Anda yakin ingin mereset progres hafalan?')) {
-                masteredSet.clear();
-                deck = [...rawVocabData];
-                currentIndex = 0;
-                saveMasteredToStorage();
-                updateCardDisplay();
-                renderVocabGrid();
-            }
-        }
+    if (confirm('Apakah Anda yakin ingin mereset progres hafalan?')) {
+
+        // Semua menjadi belum dipahami
+        masteredSet.clear();
+
+        // Kembali ke semua kartu
+        currentDeckFilter = 'all';
+        deck = [...rawVocabData];
+        currentIndex = 0;
+
+        // Simpan
+        saveMasteredToStorage();
+
+        // Update tampilan
+        updateDeckCounts();
+        updateFilterButtons();
+        updateCardDisplay();
+        renderVocabGrid();
+    }
+}
 
         function saveMasteredToStorage() {
             localStorage.setItem('jp_kanji_mastered', JSON.stringify(Array.from(masteredSet)));
@@ -681,7 +851,85 @@
                 }
             }
         }
+        function changeDeckFilter(filter) {
+    currentDeckFilter = filter;
+    currentIndex = 0;
 
+    updateDeck();
+    updateFilterButtons();
+    updateCardDisplay();
+}
+        function updateDeck() {
+    if (currentDeckFilter === 'all') {
+        deck = [...rawVocabData];
+
+    } else if (currentDeckFilter === 'unmastered') {
+        deck = rawVocabData.filter(item => {
+            return !masteredSet.has(item.kanji);
+        });
+
+    } else if (currentDeckFilter === 'mastered') {
+        deck = rawVocabData.filter(item => {
+            return masteredSet.has(item.kanji);
+        });
+    }
+
+    // Supaya index tidak melebihi jumlah kartu
+    if (deck.length === 0) {
+        currentIndex = 0;
+    } else if (currentIndex >= deck.length) {
+        currentIndex = deck.length - 1;
+    }
+}
+function updateDeckCounts() {
+    const total = rawVocabData.length;
+
+    const masteredCount = rawVocabData.filter(item =>
+        masteredSet.has(item.kanji)
+    ).length;
+
+    const unmasteredCount = total - masteredCount;
+document.getElementById('vocab-total-header').textContent =
+    `Kosakata N2 (${total} Kata)`;
+    document.getElementById('count-all').textContent = total;
+    document.getElementById('count-unmastered').textContent = unmasteredCount;
+    document.getElementById('count-mastered').textContent = masteredCount;
+}
+        
+       function updateFilterButtons() {
+    const buttons = {
+        all: document.getElementById('filter-all'),
+        unmastered: document.getElementById('filter-unmastered'),
+        mastered: document.getElementById('filter-mastered')
+    };
+
+    Object.values(buttons).forEach(btn => {
+        btn.classList.remove(
+            'bg-indigo-600',
+            'text-white',
+            'shadow-md'
+        );
+
+        btn.classList.add(
+            'bg-slate-700/60',
+            'text-slate-300'
+        );
+    });
+
+    const active = buttons[currentDeckFilter];
+
+    active.classList.remove(
+        'bg-slate-700/60',
+        'text-slate-300'
+    );
+
+    active.classList.add(
+        'bg-indigo-600',
+        'text-white',
+        'shadow-md'
+    );
+}
+        
         function setupKeyboardListeners() {
             document.addEventListener('keydown', (e) => {
                 // Don't trigger if user is typing in search input
@@ -745,7 +993,10 @@
                         <div>
                             <div class="flex items-center space-x-2">
                                 <span class="font-japanese text-sm font-semibold text-rose-400">${item.reading}</span>
-                                ${isMastered ? '<span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded">Paham</span>' : ''}
+                                ${isMastered
+    ? '<span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded">🟢 Paham</span>'
+    : '<span class="text-[10px] bg-rose-500/20 text-rose-300 px-1.5 py-0.5 rounded">🔴 Belum Paham</span>'
+}
                             </div>
                             <p class="text-xs text-slate-300 capitalize">${item.meaning}</p>
                         </div>
