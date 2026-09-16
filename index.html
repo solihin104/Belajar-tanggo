@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flashcard Kanji Bahasa Jepang</title>
+    <title>Flashcard JLPT N2 SRS</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -66,18 +66,21 @@
                 </div>
                 <div>
                     <h1 class="text-lg font-bold bg-gradient-to-r from-white via-slate-200 to-rose-400 bg-clip-text text-transparent">
-                        Kanji Flashcards
+                        JLPT N2 Flashcards
                     </h1>
                     <p id="vocab-total-header" class="text-xs text-slate-400">
-    Kosakata N2
-</p>
+                        Sistem SRS & Spaced Repetition
+                    </p>
                 </div>
             </div>
 
             <!-- Navigation Tabs -->
             <div class="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700/50 text-sm font-medium">
                 <button id="tab-cards-btn" onclick="switchTab('cards')" class="px-3.5 py-1.5 rounded-lg transition-all text-white bg-indigo-600 shadow-md">
-                    <i class="fa-solid font-normal fa-layer-group mr-1.5"></i> Flashcard
+                    <i class="fa-solid fa-layer-group mr-1.5"></i> Flashcard
+                </button>
+                <button id="tab-stats-btn" onclick="switchTab('stats')" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-chart-pie mr-1.5"></i> Statistik
                 </button>
                 <button id="tab-list-btn" onclick="switchTab('list')" class="px-3.5 py-1.5 rounded-lg transition-all text-slate-400 hover:text-white">
                     <i class="fa-solid fa-list-ul mr-1.5"></i> Daftar
@@ -94,43 +97,45 @@
         
         <!-- Flashcard View Tab -->
         <div id="tab-cards" class="w-full flex flex-col items-center max-w-xl">
-         <!-- Filter Deck -->
-<div class="w-full bg-slate-800/80 p-3 rounded-2xl border border-slate-700/60 mb-4 backdrop-blur-sm">
-    <div class="text-xs text-slate-400 font-semibold mb-2 px-1">
-        Pilih Deck
-    </div>
+            <!-- Filter Deck -->
+            <div class="w-full bg-slate-800/80 p-3 rounded-2xl border border-slate-700/60 mb-4 backdrop-blur-sm">
+                <div class="text-xs text-slate-400 font-semibold mb-2 px-1">
+                    Pilih Deck Belajar
+                </div>
 
-    <div class="grid grid-cols-3 gap-2">
-        <button
-            id="filter-all"
-            onclick="changeDeckFilter('all')"
-            class="deck-filter-btn px-2 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-indigo-600 text-white shadow-md transition-all">
-            <div>Semua</div>
-            <div id="count-all" class="text-[11px] opacity-80">0</div>
-        </button>
+                <div class="grid grid-cols-5 gap-1.5 text-center">
+                    <button id="filter-all" onclick="changeDeckFilter('all')" class="deck-filter-btn px-1 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white transition-all">
+                        <div>Semua</div>
+                        <div id="count-all" class="text-[10px] opacity-80">0</div>
+                    </button>
 
-        <button
-            id="filter-unmastered"
-            onclick="changeDeckFilter('unmastered')"
-            class="deck-filter-btn px-2 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-700/60 text-slate-300 hover:text-white transition-all">
-            <div>🔴 Belum Paham</div>
-            <div id="count-unmastered" class="text-[11px] opacity-80">0</div>
-        </button>
+                    <button id="filter-due" onclick="changeDeckFilter('due')" class="deck-filter-btn px-1 py-2 rounded-xl text-xs font-semibold bg-slate-700/60 text-slate-300 hover:text-white transition-all">
+                        <div>🔴 Review</div>
+                        <div id="count-due" class="text-[10px] opacity-80">0</div>
+                    </button>
 
-        <button
-            id="filter-mastered"
-            onclick="changeDeckFilter('mastered')"
-            class="deck-filter-btn px-2 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-700/60 text-slate-300 hover:text-white transition-all">
-            <div>🟢 Sudah Paham</div>
-            <div id="count-mastered" class="text-[11px] opacity-80">0</div>
-        </button>
-    </div>
-</div>   
+                    <button id="filter-new" onclick="changeDeckFilter('new')" class="deck-filter-btn px-1 py-2 rounded-xl text-xs font-semibold bg-slate-700/60 text-slate-300 hover:text-white transition-all">
+                        <div>🆕 Baru</div>
+                        <div id="count-new" class="text-[10px] opacity-80">0</div>
+                    </button>
+
+                    <button id="filter-learning" onclick="changeDeckFilter('learning')" class="deck-filter-btn px-1 py-2 rounded-xl text-xs font-semibold bg-slate-700/60 text-slate-300 hover:text-white transition-all">
+                        <div>🟡 Belajar</div>
+                        <div id="count-learning" class="text-[10px] opacity-80">0</div>
+                    </button>
+
+                    <button id="filter-mastered" onclick="changeDeckFilter('mastered')" class="deck-filter-btn px-1 py-2 rounded-xl text-xs font-semibold bg-slate-700/60 text-slate-300 hover:text-white transition-all">
+                        <div>🟢 Dikuasai</div>
+                        <div id="count-mastered" class="text-[10px] opacity-80">0</div>
+                    </button>
+                </div>
+            </div>   
+
             <!-- Progress Bar & Counter -->
             <div class="w-full bg-slate-800/80 p-4 rounded-2xl border border-slate-700/60 mb-6 backdrop-blur-sm">
                 <div class="flex justify-between items-center text-xs font-semibold text-slate-400 mb-2">
-                    <span id="card-counter">Kartu 1 dari 55</span>
-                    <span id="mastered-count" class="text-emerald-400">0 Dipahami</span>
+                    <span id="card-counter">Kartu 1 dari 0</span>
+                    <span id="card-type-label" class="text-indigo-400 bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-500/30">Tipe A: Kanji → Reading</span>
                 </div>
                 <div class="w-full bg-slate-700 h-2.5 rounded-full overflow-hidden">
                     <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-rose-500 h-full w-0 transition-all duration-300"></div>
@@ -141,96 +146,156 @@
             <div class="w-full h-80 sm:h-96 perspective-1000 cursor-pointer group" onclick="flipCard()">
                 <div id="flashcard" class="relative w-full h-full transform-style-3d shadow-2xl rounded-3xl border border-slate-700/80 bg-slate-800/90">
                     
-                    <!-- FRONT SIDE (KANJI) -->
+                    <!-- FRONT SIDE -->
                     <div class="absolute inset-0 w-full h-full backface-hidden flex flex-col justify-between p-6 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 rounded-3xl border border-slate-700">
                         <div class="flex justify-between items-center text-xs text-slate-400 font-mono">
-                            <span class="bg-slate-700/60 px-2.5 py-1 rounded-md text-slate-300">Depan (Kanji)</span>
+                            <span id="card-front-tag" class="bg-slate-700/60 px-2.5 py-1 rounded-md text-slate-300">Pertanyaan</span>
+                            <span id="card-status-badge" class="bg-slate-800 border border-slate-700 px-2 py-0.5 rounded text-[10px]">Baru</span>
                         </div>
                         
                         <div class="flex flex-col items-center justify-center text-center my-auto">
-                            <span id="card-kanji" class="font-japanese text-7xl sm:text-8xl font-black text-white tracking-widest drop-shadow-md group-hover:scale-105 transition-transform">
-                                穴
+                            <span id="card-front-main" class="font-japanese text-6xl sm:text-7xl font-black text-white tracking-widest drop-shadow-md group-hover:scale-105 transition-transform">
+                                —
+                            </span>
+                            <span id="card-front-sub" class="text-slate-400 text-sm mt-3 hidden font-japanese">
+                                
                             </span>
                         </div>
 
                         <div class="flex items-center justify-center text-slate-400 text-xs gap-1.5">
                             <i class="fa-solid fa-rotate text-indigo-400 animate-spin-slow"></i>
-                            <span>Klik atau tekan [Spasi] untuk balik</span>
+                            <span>Klik atau tekan [Spasi] untuk melihat jawaban</span>
                         </div>
                     </div>
 
-                    <!-- BACK SIDE (HIRAGANA & MEANING) -->
+                    <!-- BACK SIDE -->
                     <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 flex flex-col justify-between p-6 bg-gradient-to-br from-indigo-950/60 via-slate-900 to-slate-900 rounded-3xl border border-indigo-500/30">
                         <div class="flex justify-between items-center text-xs text-slate-400 font-mono">
-                            <span class="bg-indigo-500/20 text-indigo-300 px-2.5 py-1 rounded-md border border-indigo-500/30">Belakang (Baca & Arti)</span>
+                            <span class="bg-indigo-500/20 text-indigo-300 px-2.5 py-1 rounded-md border border-indigo-500/30">Jawaban</span>
                         </div>
                         
-                        <div class="flex flex-col items-center justify-center text-center my-auto space-y-3">
-                            <span id="card-reading" class="font-japanese text-3xl sm:text-4xl font-bold text-rose-400">
-                                あな
+                        <div class="flex flex-col items-center justify-center text-center my-auto space-y-2">
+                            <span id="card-back-main" class="font-japanese text-3xl sm:text-4xl font-bold text-rose-400">
+                                —
                             </span>
                             <div class="h-0.5 w-16 bg-slate-700 my-1"></div>
-                            <span id="card-meaning" class="text-xl sm:text-2xl font-bold text-slate-100">
-                                lubang
+                            <span id="card-back-meaning" class="text-lg sm:text-xl font-bold text-slate-100">
+                                —
                             </span>
+                            <div id="card-back-extra" class="text-xs text-slate-400 font-japanese mt-2 bg-slate-800/80 p-2 rounded-lg border border-slate-700/50 w-full">
+                                
+                            </div>
                         </div>
 
                         <div class="flex items-center justify-center text-slate-400 text-xs gap-1.5">
                             <i class="fa-solid fa-lightbulb text-amber-400"></i>
-                            <span id="card-kanji-sub">Kanji: 穴</span>
+                            <span id="card-back-footer">Evaluasi hafalanmu di bawah</span>
                         </div>
                     </div>
 
                 </div>
             </div>
 
-            <!-- Controls Toolbar -->
+            <!-- SRS Rating Controls Toolbar -->
             <div class="w-full flex flex-col gap-4 mt-6">
                 
-                <!-- Main Controls -->
+                <div class="text-xs text-center text-slate-400 font-medium">Baimana tingkat kesulitannya?</div>
+
+                <!-- SRS Rating Buttons -->
                 <div class="grid grid-cols-4 gap-2">
-                    <button onclick="prevCard()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 py-3 rounded-xl border border-slate-700 font-semibold flex items-center justify-center gap-2 transition-all active:scale-95">
-                        <i class="fa-solid fa-chevron-left"></i>
-                        <span class="hidden sm:inline">Sebelumnya</span>
+                    <button onclick="reviewCard('again')" class="bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 py-2.5 rounded-xl font-semibold flex flex-col items-center justify-center transition-all active:scale-95">
+                        <span class="text-sm">🔴 Lupa</span>
+                        <span class="text-[10px] text-rose-400/80 mt-0.5">10 mnt</span>
                     </button>
 
-                    <button id="master-btn" onclick="toggleMastered()" class="bg-slate-800 hover:bg-emerald-950/50 text-slate-300 hover:text-emerald-400 border border-slate-700 hover:border-emerald-500/50 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all active:scale-95 col-span-2">
-                        <i class="fa-solid fa-check"></i>
-                        <span id="master-btn-text">Tandai Paham</span>
+                    <button onclick="reviewCard('hard')" class="bg-amber-950/40 hover:bg-amber-900/60 text-amber-300 border border-amber-800/60 py-2.5 rounded-xl font-semibold flex flex-col items-center justify-center transition-all active:scale-95">
+                        <span class="text-sm">🟡 Sulit</span>
+                        <span class="text-[10px] text-amber-400/80 mt-0.5">1 hr</span>
                     </button>
 
-                    <button onclick="nextCard()" class="bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/25 transition-all active:scale-95">
-                        <span class="hidden sm:inline">Selanjutnya</span>
-                        <i class="fa-solid fa-chevron-right"></i>
+                    <button onclick="reviewCard('good')" class="bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 border border-emerald-800/60 py-2.5 rounded-xl font-semibold flex flex-col items-center justify-center transition-all active:scale-95">
+                        <span class="text-sm">🟢 Ingat</span>
+                        <span class="text-[10px] text-emerald-400/80 mt-0.5">3 hr</span>
+                    </button>
+
+                    <button onclick="reviewCard('easy')" class="bg-sky-950/40 hover:bg-sky-900/60 text-sky-300 border border-sky-800/60 py-2.5 rounded-xl font-semibold flex flex-col items-center justify-center transition-all active:scale-95">
+                        <span class="text-sm">🔵 Mudah</span>
+                        <span class="text-[10px] text-sky-400/80 mt-0.5">7 hr</span>
                     </button>
                 </div>
 
                 <!-- Secondary Actions -->
-                <div class="flex justify-between items-center text-xs text-slate-400 px-1">
+                <div class="flex justify-between items-center text-xs text-slate-400 px-1 mt-2">
                     <button onclick="shuffleCards()" class="hover:text-white flex items-center gap-1.5 transition-colors">
-                        <i class="fa-solid fa-shuffle text-indigo-400"></i> Acak Kartu
+                        <i class="fa-solid fa-shuffle text-indigo-400"></i> Acak Deck
                     </button>
                     <button onclick="resetProgress()" class="hover:text-rose-400 flex items-center gap-1.5 transition-colors">
-                        <i class="fa-solid fa-rotate-right"></i> Reset Progres
+                        <i class="fa-solid fa-rotate-right"></i> Reset SRS Data
                     </button>
                 </div>
             </div>
 
             <!-- Keyboard Guide -->
-            <div class="mt-8 text-center text-slate-500 text-xs hidden sm:block">
-                <p><span class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300 font-mono">←</span> / <span class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300 font-mono">→</span> Navigasi | <span class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300 font-mono">Spasi</span> Balik Kartu</p>
+            <div class="mt-6 text-center text-slate-500 text-xs hidden sm:block">
+                <p><span class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300 font-mono">Spasi</span> Balik Kartu | Evaluasi memajukan kartu otomatis</p>
             </div>
 
+        </div>
+
+        <!-- Statistics Tab -->
+        <div id="tab-stats" class="w-full max-w-xl hidden flex flex-col items-center">
+            <div class="w-full bg-slate-800/80 border border-slate-700/60 rounded-2xl p-6 backdrop-blur-sm">
+                <h2 class="text-xl font-bold text-white mb-1">Statistik Hafalan SRS</h2>
+                <p class="text-xs text-slate-400 mb-6">Ringkasan progres belajar berbasis Spaced Repetition System</p>
+
+                <!-- Stat Box Container -->
+                <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-700 font-mono text-sm space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <span class="text-slate-400 font-sans">N2 Vocabulary</span>
+                        <span class="font-bold text-white"><span id="stat-total">0</span> kosakata</span>
+                    </div>
+
+                    <div class="space-y-2 font-sans text-xs">
+                        <div class="flex justify-between items-center">
+                            <span class="text-emerald-400 font-semibold">🟢 Dikuasai (Mastered)</span>
+                            <span id="stat-mastered" class="font-bold text-slate-200">0</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-amber-400 font-semibold">🟡 Dipelajari (Learning)</span>
+                            <span id="stat-learning" class="font-bold text-slate-200">0</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-400 font-semibold">⚪ Belum Dipelajari (New)</span>
+                            <span id="stat-new" class="font-bold text-slate-200">0</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-800 pt-3 flex justify-between items-center font-sans text-xs">
+                        <span class="text-rose-400 font-semibold">📚 Harus Di-review Hari Ini</span>
+                        <span id="stat-due" class="font-bold text-rose-300">0</span>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="pt-2 font-sans">
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span class="text-slate-400">Total Progres Penguasaan</span>
+                            <span id="stat-progress" class="text-indigo-400">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden border border-slate-700">
+                            <div id="stat-progress-bar" class="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full w-0 transition-all duration-500"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Vocabulary List View Tab -->
         <div id="tab-list" class="w-full hidden">
             <div class="bg-slate-800/80 border border-slate-700/60 rounded-2xl p-4 sm:p-6 backdrop-blur-sm">
-                
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
                         <h2 class="text-xl font-bold text-white">Daftar Semua Kosakata</h2>
-                        <p class="text-xs text-slate-400">Cari dan pelajari cara baca kosakata Kanji</p>
+                        <p class="text-xs text-slate-400">Cari kosakata dan periksa status review SRS</p>
                     </div>
 
                     <!-- Search Input -->
@@ -258,16 +323,17 @@
 
     <!-- Footer -->
     <footer class="bg-slate-900 border-t border-slate-800 py-4 text-center text-xs text-slate-500">
-        <p>Aplikasi Flashcard Kanji Bahasa Jepang &copy; 2026</p>
+        <p>Aplikasi Flashcard Kanji N2 SRS &copy; 2026</p>
     </footer>
 
     <script>
-        // Full vocabulary database from user input
+        // Data vocabulary lengkap (termasuk contoh kalimat & sinonim untuk Multi-type cards)
         const rawVocabData = [
-            { kanji: "穴", reading: "あな", meaning: "lubang" },
-            { kanji: "油", reading: "あぶら", meaning: "minyak" },
-            { kanji: "胃", reading: "い", meaning: "lambung / perut" },
-            { kanji: "息", reading: "いき", meaning: "napas" },
+            { kanji: "相当", reading: "そうとう", meaning: "setara / sebanding / lumayan", example: "相当難しい問題です。", exampleReading: "そうとう むずかしい もんだいです。", exampleMeaning: "Soal ini cukup sulit.", similar: "かなり" },
+            { kanji: "穴", reading: "あな", meaning: "lubang", example: "壁に穴を開ける。", exampleReading: "かべに あなを あける。", exampleMeaning: "Membuat lubang di dinding." },
+            { kanji: "油", reading: "あぶら", meaning: "minyak", example: "フライパンに油をひく。", exampleReading: "ふらいぱんに あぶらを ひく。", exampleMeaning: "Menuangkan minyak ke wajan." },
+            { kanji: "胃", reading: "い", meaning: "lambung / perut", example: "胃が痛いです。", exampleReading: "いが いたい です。", exampleMeaning: "Perut/lambung saya sakit." },
+            { kanji: "息", reading: "いき", meaning: "napas", example: "深く息を吸う。", exampleReading: "ふかく いきを すう。", exampleMeaning: "Menaikkan/menarik napas dalam-dalam." },
             { kanji: "裏", reading: "うら", meaning: "bagian belakang / sisi dalam" },
             { kanji: "噂", reading: "うわさ", meaning: "rumor / gosip" },
             { kanji: "餌", reading: "えさ", meaning: "umpan / makanan hewan" },
@@ -319,637 +385,601 @@
             { kanji: "寮", reading: "りょう", meaning: "asrama" },
             { kanji: "量", reading: "りょう", meaning: "kuantitas / jumlah" },
             { kanji: "列", reading: "れつ", meaning: "antrean / barisan" },
-{ kanji: "合図", reading: "あいず", meaning: "isyarat / sinyal" },
-{ kanji: "青空", reading: "あおぞら", meaning: "langit biru" },
-{ kanji: "以外", reading: "いがい", meaning: "selain / kecuali" },
-{ kanji: "以後", reading: "いご", meaning: "setelah ini / selanjutnya" },
-{ kanji: "以降", reading: "いこう", meaning: "sejak / mulai dari (waktu tertentu)" },
-{ kanji: "維持", reading: "いじ", meaning: "pemeliharaan / mempertahankan" },
-{ kanji: "意識", reading: "いしき", meaning: "kesadaran" },
-{ kanji: "以前", reading: "いぜん", meaning: "sebelum / dahulu" },
-{ kanji: "位置", reading: "いち", meaning: "posisi / letak" },
-{ kanji: "一流", reading: "いちりゅう", meaning: "kelas satu / terkemuka / papan atas" },
-{ kanji: "一般", reading: "いっぱん", meaning: "umum / biasa" },
-{ kanji: "移動", reading: "いどう", meaning: "perpindahan / pergerakan" },
-{ kanji: "以内", reading: "いない", meaning: "dalam kurun / tidak lebih dari" },
-{ kanji: "田舎", reading: "いなか", meaning: "desa / kampung halaman" },
-{ kanji: "印刷", reading: "いんさつ", meaning: "pencetakan / print" },
-{ kanji: "印象", reading: "いんしょう", meaning: "kesan" },
-{ kanji: "飲料", reading: "いんりょう", meaning: "minuman" },
-{ kanji: "内側", reading: "うちがわ", meaning: "bagian dalam" },
-{ kanji: "宇宙", reading: "うちゅう", meaning: "alam semesta / luar angkasa" },
-{ kanji: "影響", reading: "えいきょう", meaning: "pengaruh / dampak" },
-{ kanji: "営業", reading: "えいぎょう", meaning: "bisnis / penjualan / beroperasi" },
-{ kanji: "栄養", reading: "えいよう", meaning: "nutrisi / gizi" },
-{ kanji: "笑顔", reading: "えがお", meaning: "wajah tersenyum / senyuman" },
-{ kanji: "延期", reading: "えんき", meaning: "penundaan" },
-{ kanji: "演奏", reading: "えんそう", meaning: "pertunjukan musik" },
-{ kanji: "遠慮", reading: "えんりょ", meaning: "segan / menahan diri" },
-{ kanji: "往復", reading: "おうふく", meaning: "pulang pergi (perjalanan)" },
-{ kanji: "応募", reading: "おうぼ", meaning: "pendaftaran / lamaran" },
-{ kanji: "応用", reading: "おうよう", meaning: "penerapan / aplikasi" },
-{ kanji: "大勢", reading: "おおぜい", meaning: "banyak orang" },
-{ kanji: "親子", reading: "おやこ", meaning: "orang tua dan anak" },
-{ kanji: "温泉", reading: "おんせん", meaning: "pemandian air panas" },
-{ kanji: "会員", reading: "かいいん", meaning: "anggota / member" },
-{ kanji: "絵画", reading: "かいが", meaning: "lukisan" },
-{ kanji: "会議", reading: "かいぎ", meaning: "rapat / konferensi" },
-{ kanji: "会計", reading: "かいけい", meaning: "akuntansi / pembayaran (kasir)" },
-{ kanji: "解決", reading: "かいけつ", meaning: "penyelesaian / solusi" },
-{ kanji: "回収", reading: "かいしゅう", meaning: "pengumpulan / penarikan kembali" },
-{ kanji: "開始", reading: "かいし", meaning: "permulaan / pembukaan" },
-{ kanji: "開場", reading: "かいじょう", meaning: "pembukaan tempat / venue" },
-{ kanji: "回数", reading: "かいすう", meaning: "frekuensi / jumlah kali" },
-{ kanji: "解説", reading: "かいせつ", meaning: "penjelasan / uraian" },
-{ kanji: "階段", reading: "かいだん", meaning: "tangga" },
-{ kanji: "開店", reading: "かいてん", meaning: "pembukaan toko" },
-{ kanji: "価格", reading: "かかく", meaning: "harga" },
-{ kanji: "各地", reading: "かくち", meaning: "berbagai tempat / tiap daerah" },
-{ kanji: "確認", reading: "かくにん", meaning: "konfirmasi / pengecekan" },
-{ kanji: "過去", reading: "かこ", meaning: "masa lalu / lampau" },
-{ kanji: "火災", reading: "かさい", meaning: "kebakaran" },
-{ kanji: "花壇", reading: "かだん", meaning: "bedeng bunga / taman bunga" },
-{ kanji: "価値", reading: "かち", meaning: "nilai / harga diri" },
-{ kanji: "課長", reading: "かちょう", meaning: "kepala seksi / kepala bagian" },
-{ kanji: "各国", reading: "かっこく", meaning: "setiap negara / berbagai negara" },
-{ kanji: "活動", reading: "かつどう", meaning: "aktivitas / kegiatan" },
-{ kanji: "家庭", reading: "かてい", meaning: "rumah tangga / keluarga" },
-{ kanji: "花瓶", reading: "かびん", meaning: "vas bunga" },
-{ kanji: "髪型", reading: "かみがた", meaning: "gaya rambut" },
-{ kanji: "観客", reading: "かんきゃく", meaning: "penonton / pengunjung" },
-{ kanji: "環境", reading: "かんきょう", meaning: "lingkungan" },
-{ kanji: "関係", reading: "かんけい", meaning: "hubungan / kaitan" },
-{ kanji: "歓迎", reading: "かんげい", meaning: "penyambutan / selamat datang" },
-{ kanji: "感激", reading: "かんげき", meaning: "terharu / tersentuh" },
-{ kanji: "観光", reading: "かんこう", meaning: "pariwisata / tamasya" },
-{ kanji: "看護", reading: "かんご", meaning: "keperawatan / merawat pasien" },
-{ kanji: "観察", reading: "かんさつ", meaning: "pengamatan / observasi" },
-{ kanji: "感謝", reading: "かんしゃ", meaning: "rasa terima kasih / apresiasi" },
-{ kanji: "感心", reading: "かんしん", meaning: "kagum / terkesan" },
-{ kanji: "関心", reading: "かんしん", meaning: "minat / kepedulian" },
-{ kanji: "完成", reading: "かんせい", meaning: "penyelesaian / pembuatannya selesai" },
-{ kanji: "乾燥", reading: "かんそう", meaning: "pengeringan / kering" },
-{ kanji: "感想", reading: "かんそう", meaning: "kesan / pendapat" },
-{ kanji: "感動", reading: "かんどう", meaning: "terharu / terkesan mendalam" },
-{ kanji: "館内", reading: "かんない", meaning: "di dalam gedung / fasilitas" },
-{ kanji: "外出", reading: "がいしゅつ", meaning: "bepergian keluar" },
-{ kanji: "外食", reading: "がいしょく", meaning: "makan di luar" },
-{ kanji: "画家", reading: "がか", meaning: "pelukis" },
-{ kanji: "学部", reading: "がくぶ", meaning: "fakultas / jurusan" },
-{ kanji: "学期", reading: "がっき", meaning: "semester / masa studi" },
-{ kanji: "楽器", reading: "がっき", meaning: "alat musik" },
-{ kanji: "我慢", reading: "がまん", meaning: "kesabaran / menahan diri" },
-{ kanji: "気温", reading: "きおん", meaning: "suhu udara" },
-{ kanji: "機械", reading: "きかい", meaning: "mesin" },
-{ kanji: "期間", reading: "きかん", meaning: "jangka waktu / periode" },
-{ kanji: "企業", reading: "きぎょう", meaning: "perusahaan / korporasi" },
-{ kanji: "期限", reading: "きげん", meaning: "tenggat waktu / batas waktu" },
-{ kanji: "帰国", reading: "きこく", meaning: "pulang ke negara asal" },
-{ kanji: "記事", reading: "きじ", meaning: "artikel / berita" },
-{ kanji: "基礎", reading: "きそ", meaning: "dasar / fondasi" },
-{ kanji: "規則", reading: "きそく", meaning: "peraturan / aturan" },
-{ kanji: "期待", reading: "きたい", meaning: "harapan / ekspektasi" },
-{ kanji: "北側", reading: "きたがわ", meaning: "sebelah utara / sisi utara" },
-{ kanji: "帰宅", reading: "きたく", meaning: "pulang ke rumah" },
-{ kanji: "切符", reading: "きっぷ", meaning: "tiket" },
-{ kanji: "記念", reading: "きねん", meaning: "peringatan / kenang-kenangan" },
-{ kanji: "基本", reading: "きほん", meaning: "dasar / standar" },
-{ kanji: "希望", reading: "きぼう", meaning: "harapan / keinginan" },
-{ kanji: "競争", reading: "きょうそう", meaning: "persaingan / kompetisi" },
-{ kanji: "共通", reading: "きょうつう", meaning: "kesamaan / umum" },
-{ kanji: "協力", reading: "きょうりょく", meaning: "kerja sama" },
-{ kanji: "距離", reading: "きょり", meaning: "jarak" },
-{ kanji: "記録", reading: "きろく", meaning: "catatan / rekor" },
-{ kanji: "近所", reading: "きんじょ", meaning: "lingkungan sekitar / tetangga" },
-{ kanji: "技術", reading: "ぎじゅつ", meaning: "teknologi / teknik / keahlian" },
-{ kanji: "草花", reading: "くさばな", meaning: "rumput dan bunga / tanaman hias" },
-{ kanji: "工夫", reading: "くふう", meaning: "akal / usaha kreatif / cara cerdik" },
-{ kanji: "区別", reading: "くべつ", meaning: "pembedaan / membedakan" },
-{ kanji: "苦労", reading: "くろう", meaning: "kesusahan / kerja keras" },
-{ kanji: "訓練", reading: "くんれん", meaning: "pelatihan / latihan" },
-{ kanji: "偶然", reading: "ぐうぜん", meaning: "kebetulan" },
-{ kanji: "経営", reading: "けいえい", meaning: "manajemen / pengelolaan bisnis" },
-{ kanji: "計画", reading: "けいかく", meaning: "rencana / perencanaan" },
-{ kanji: "警官", reading: "けいかん", meaning: "polisi / opsir polisi" },
-{ kanji: "経験", reading: "けいけん", meaning: "pengalaman" },
-{ kanji: "経済", reading: "けいざい", meaning: "ekonomi" },
-{ kanji: "警察", reading: "けいさつ", meaning: "kepolisian" },
-{ kanji: "携帯", reading: "けいたい", meaning: "membawa / HP (telepon genggam)" },
-{ kanji: "経由", reading: "けいゆ", meaning: "transit / melalui" },
-{ kanji: "景色", reading: "けしき", meaning: "pemandangan" },
-{ kanji: "結局", reading: "けっきょく", meaning: "pada akhirnya" },
-{ kanji: "結構", reading: "けっこう", meaning: "cukup / lumayan / bagus" },
-{ kanji: "結婚", reading: "けっこん", meaning: "pernikahan" },
-{ kanji: "欠点", reading: "けってん", meaning: "kekurangan / kelemahan" },
-{ kanji: "健康", reading: "けんこう", meaning: "kesehatan" },
-{ kanji: "検査", reading: "けんさ", meaning: "pemeriksaan / inspeksi" },
-{ kanji: "建設", reading: "けんせつ", meaning: "konstruksi / pembangunan" },
-{ kanji: "建築", reading: "けんちく", meaning: "arsitektur / bangunan" },
-{ kanji: "芸術", reading: "げいじゅつ", meaning: "seni / kesenian" },
-{ kanji: "原因", reading: "げんいん", meaning: "penyebab / alasan" },
-{ kanji: "原稿", reading: "げんこう", meaning: "naskah / draf" },
-{ kanji: "言語", reading: "げんご", meaning: "bahasa" },
-{ kanji: "減少", reading: "げんしょう", meaning: "pengurangan / penurunan" },
-{ kanji: "講演", reading: "こうえん", meaning: "ceramah / kuliah umum" },
-{ kanji: "高温", reading: "こうおん", meaning: "suhu tinggi" },
-{ kanji: "効果", reading: "こうか", meaning: "efek / khasiat / hasil" },
-{ kanji: "交換", reading: "こうかん", meaning: "pertukaran / penukaran" },
-{ kanji: "後期", reading: "こうき", meaning: "semester / periode akhir" },
-{ kanji: "講義", reading: "こうぎ", meaning: "perkuliahan / kuliah" },
-{ kanji: "公共", reading: "こうきょう", meaning: "umum / publik" },
-{ kanji: "工業", reading: "こうぎょう", meaning: "industri" },
-{ kanji: "航空", reading: "こうくう", meaning: "penerbangan / penerbangan udara" },
-{ kanji: "広告", reading: "こうこく", meaning: "iklan / reklame" },
-{ kanji: "工事", reading: "こうじ", meaning: "konstruksi / pekerjaan jalan / bangunan" },
-{ kanji: "紅茶", reading: "こうちゃ", meaning: "teh hitam" },
-{ kanji: "交通", reading: "こうつう", meaning: "lalu lintas / transportasi" },
-{ kanji: "行動", reading: "こうどう", meaning: "tindakan / aksi" },
-{ kanji: "後半", reading: "こうはん", meaning: "paruh kedua / babak kedua" },
-{ kanji: "後方", reading: "こうほう", meaning: "bagian belakang" },
-{ kanji: "交流", reading: "こうりゅう", meaning: "pertukaran (budaya/sosial) / interaksi" },
-{ kanji: "国語", reading: "こくご", meaning: "bahasa nasional (bahasa Jepang)" },
-{ kanji: "国際", reading: "こくさい", meaning: "internasional" },
-{ kanji: "個人", reading: "こじん", meaning: "individu / perseorangan" },
-{ kanji: "混雑", reading: "こんざつ", meaning: "kemacetan / keramaian / padat" },
-{ kanji: "合格", reading: "ごうかく", meaning: "lulus (ujian)" },
-{ kanji: "合計", reading: "ごうけい", meaning: "total / jumlah keseluruhan" },
-{ kanji: "最終", reading: "さいしゅう", meaning: "terakhir / final" },
-{ kanji: "最初", reading: "さいしょ", meaning: "awal / pertama kali" },
-{ kanji: "財布", reading: "さいふ", meaning: "dompet" },
-{ kanji: "作業", reading: "さぎょう", meaning: "pekerjaan / aktivitas kerja" },
-{ kanji: "作者", reading: "さくしゃ", meaning: "pembuat / penulis / pengarang" },
-{ kanji: "作品", reading: "さくひん", meaning: "karya (seni/sastra/dll.)" },
-{ kanji: "昨夜", reading: "さくや", meaning: "tadi malam / semalam" },
-{ kanji: "作家", reading: "さっか", meaning: "penulis / pengarang" },
-{ kanji: "算数", reading: "さんすう", meaning: "matematika dasar / berhitung" },
-{ kanji: "賛成", reading: "さんせい", meaning: "persetujuan / setuju" },
-{ kanji: "材料", reading: "ざいりょう", meaning: "bahan / material" },
-{ kanji: "雑誌", reading: "ざっし", meaning: "majalah" },
-{ kanji: "試験", reading: "しけん", meaning: "ujian / tes" },
-{ kanji: "資源", reading: "しげん", meaning: "sumber daya" },
-{ kanji: "指示", reading: "しじ", meaning: "petunjuk / instruksi" },
-{ kanji: "姿勢", reading: "しせい", meaning: "sikap tubuh / postur / sikap" },
-{ kanji: "自然", reading: "しぜん", meaning: "alam / alami" },
-{ kanji: "市長", reading: "しちょう", meaning: "walikota" },
-{ kanji: "失敗", reading: "しっぱい", meaning: "kegagalan / gagal" },
-{ kanji: "指定", reading: "してい", meaning: "penunjukan / penentuan" },
-{ kanji: "支店", reading: "してん", meaning: "cabang toko / kantor cabang" },
-{ kanji: "指導", reading: "しどう", meaning: "bimbingan / arahan" },
-{ kanji: "始発", reading: "しはつ", meaning: "keberangkatan pertama (kereta/bus)" },
-{ kanji: "芝生", reading: "しばふ", meaning: "rumput / halaman rumput" },
-{ kanji: "市民", reading: "しみん", meaning: "warga kota / penduduk" },
-{ kanji: "氏名", reading: "しめい", meaning: "nama lengkap" },
-{ kanji: "車内", reading: "しゃない", meaning: "di dalam kendaraan / kereta" },
-{ kanji: "習慣", reading: "しゅうかん", meaning: "kebiasaan / tradisi" },
-{ kanji: "就職", reading: "しゅうしょく", meaning: "dapat kerja / bekerja" },
-{ kanji: "集中", reading: "しゅうちゅう", meaning: "konsentrasi / pemusatan" },
-{ kanji: "収入", reading: "しゅうにゅう", meaning: "pendapatan / penghasilan" },
-{ kanji: "終了", reading: "しゅうりょう", meaning: "penyelesaian / berakhir" },
-{ kanji: "祝日", reading: "しゅくじつ", meaning: "hari libur nasional" },
-{ kanji: "手術", reading: "しゅじゅつ", meaning: "operasi (medis)" },
-{ kanji: "手段", reading: "しゅだん", meaning: "sarana / cara / metode" },
-{ kanji: "主張", reading: "しゅちょう", meaning: "klaim / pendapat / penegasan" },
-{ kanji: "出勤", reading: "しゅっきん", meaning: "masuk kerja" },
-{ kanji: "出身", reading: "しゅっしん", meaning: "asal (daerah/kota/kelahiran)" },
-{ kanji: "種類", reading: "しゅるい", meaning: "jenis / macam" },
-{ kanji: "使用", reading: "しよう", meaning: "penggunaan / pemakaian" },
-{ kanji: "紹介", reading: "しょうかい", meaning: "perkenalan / penyampaian" },
-{ kanji: "招待", reading: "しょうたい", meaning: "undangan" },
-{ kanji: "消費", reading: "しょうひ", meaning: "konsumsi / pemakaian" },
-{ kanji: "商品", reading: "しょうひん", meaning: "barang dagangan / produk" },
-{ kanji: "証明", reading: "しょうめい", meaning: "pembuktian / bukti" },
-{ kanji: "正面", reading: "しょうめん", meaning: "bagian depan / tampak depan" },
-{ kanji: "将来", reading: "しょうらい", meaning: "masa depan" },
-{ kanji: "食欲", reading: "しょくよく", meaning: "nafsu makan" },
-{ kanji: "食器", reading: "しょっき", meaning: "peralatan makan" },
-{ kanji: "書類", reading: "しょるい", meaning: "dokumen / berkas" },
-{ kanji: "資料", reading: "しりょう", meaning: "bahan materi / data / dokumen" },
-{ kanji: "進学", reading: "しんがく", meaning: "melanjutkan pendidikan" },
-{ kanji: "進行", reading: "しんこう", meaning: "kemajuan / proses berlangsung" },
-{ kanji: "申請", reading: "しんせい", meaning: "permohonan / pengajuan (aplikasi)" },
-{ kanji: "心臓", reading: "しんぞう", meaning: "jantung" },
-{ kanji: "心配", reading: "しんぱい", meaning: "kekhawatiran / cemas" },
-{ kanji: "進歩", reading: "しんぽ", meaning: "kemajuan / perkembangan" },
-{ kanji: "森林", reading: "しんりん", meaning: "hutan" },
-{ kanji: "時期", reading: "じき", meaning: "waktu / periode / musim" },
-{ kanji: "時給", reading: "じきゅう", meaning: "upah per jam" },
-{ kanji: "事件", reading: "じけん", meaning: "insiden / kasus / kejadian" },
-{ kanji: "時刻", reading: "じこく", meaning: "waktu / jam" },
-{ kanji: "持参", reading: "じさん", meaning: "membawa serta" },
-{ kanji: "事情", reading: "じじょう", meaning: "keadaan / situasi / alasan" },
-{ kanji: "自信", reading: "じしん", meaning: "percaya diri" },
-{ kanji: "時代", reading: "じだい", meaning: "zaman / era" },
-{ kanji: "自宅", reading: "じたく", meaning: "rumah sendiri" },
-{ kanji: "実家", reading: "じっか", meaning: "rumah orang tua / rumah asal" },
-{ kanji: "実験", reading: "じっけん", meaning: "eksperimen / percobaan" },
-{ kanji: "実行", reading: "じっこう", meaning: "pelaksanaan / eksekusi" },
-{ kanji: "実用", reading: "じつよう", meaning: "penggunaan praktis" },
-{ kanji: "実力", reading: "じつりょく", meaning: "kemampuan sebenarnya" },
-{ kanji: "自慢", reading: "じまん", meaning: "membanggakan diri / pamer" },
-{ kanji: "事務", reading: "じむ", meaning: "administrasi / pekerjaan kantor" },
-{ kanji: "渋滞", reading: "じゅうたい", meaning: "kemacetan (lalu lintas)" },
-{ kanji: "受験", reading: "じゅけん", meaning: "mengikuti ujian" },
-{ kanji: "重要", reading: "じゅうよう", meaning: "penting / krusial" },
-{ kanji: "順番", reading: "じゅんばん", meaning: "urutan / giliran" },
-{ kanji: "準備", reading: "じゅんび", meaning: "persiapan" },
-{ kanji: "上司", reading: "じょうし", meaning: "atasan (dalam pekerjaan)" },
-{ kanji: "乗車", reading: "じょうしゃ", meaning: "naik kendaraan / menumpang" },
-{ kanji: "状態", reading: "じょうたい", meaning: "kondisi / keadaan" },
-{ kanji: "冗談", reading: "じょうだん", meaning: "lelucon / gurauan" },
-{ kanji: "女性", reading: "じょせい", meaning: "wanita / perempuan" },
-{ kanji: "神社", reading: "じんじゃ", meaning: "kuil Shinto" },
-{ kanji: "人生", reading: "じんせい", meaning: "kehidupan (manusia)" },
-{ kanji: "人体", reading: "じんたい", meaning: "tubuh manusia" },
-{ kanji: "睡眠", reading: "すいみん", meaning: "tidur" },
-{ kanji: "数学", reading: "すうがく", meaning: "matematika" },
-{ kanji: "数字", reading: "すうじ", meaning: "angka / digit" },
-{ kanji: "正解", reading: "せいかい", meaning: "jawaban benar" },
-{ kanji: "制限", reading: "せいげん", meaning: "pembatasan / batasan" },
-{ kanji: "清掃", reading: "せいそう", meaning: "pembersihan" },
-{ kanji: "制服", reading: "せいふく", meaning: "seragam" },
-{ kanji: "設備", reading: "せつび", meaning: "fasilitas / perlengkapan" },
-{ kanji: "先日", reading: "せんじつ", meaning: "beberapa hari yang lalu" },
-{ kanji: "洗濯", reading: "せんたく", meaning: "mencuci pakaian" },
-{ kanji: "宣伝", reading: "せんでん", meaning: "promosi / propaganda / iklan" },
-{ kanji: "先輩", reading: "せんぱい", meaning: "senior" },
-{ kanji: "専門", reading: "せんもん", meaning: "bidang keahlian / spesialisasi" },
-{ kanji: "全員", reading: "ぜんいん", meaning: "semua anggota / seluruh orang" },
-{ kanji: "前後", reading: "ぜんご", meaning: "depan belakang / kurang lebih" },
-{ kanji: "前半", reading: "ぜんはん", meaning: "paruh pertama / babak pertama" },
-{ kanji: "倉庫", reading: "そうこ", meaning: "gudang" },
-{ kanji: "掃除", reading: "そうじ", meaning: "membersihkan / menyapu-ngepel" },
-{ kanji: "送信", reading: "そうしん", meaning: "pengiriman (pesan/data)" },
-{ kanji: "想像", reading: "そうぞう", meaning: "imajinasi / membayangkan" },
-{ kanji: "早朝", reading: "そうちょう", meaning: "pagi-pagi sekali / dini hari" },
-         {
-        kanji: "相当",
-        reading: "そうとう",
-        meaning: "setara / sebanding / lumayan"
-    },
-    {
-        kanji: "送料",
-        reading: "そうりょう",
-        meaning: "ongkos kirim (ongkir)"
-    },
-    {
-        kanji: "外側",
-        reading: "そとがわ",
-        meaning: "bagian luar / sisi luar"
-    },
-    {
-        kanji: "尊敬",
-        reading: "そんけい",
-        meaning: "rasa hormat / menghormati"
-    },
-    {
-        kanji: "増加",
-        reading: "ぞうか",
-        meaning: "peningkatan / pertambahan"
-    },
-    {
-        kanji: "滞在",
-        reading: "たいざい",
-        meaning: "tinggal sementara / menginap"
-    },
-    {
-        kanji: "体操",
-        reading: "たいそう",
-        meaning: "senam / latihan fisik"
-    },
-    {
-        kanji: "大量",
-        reading: "たいりょう",
-        meaning: "jumlah besar / jumlah banyak"
-    },
-    {
-        kanji: "体力",
-        reading: "たいりょく",
-        meaning: "stamina / kekuatan fisik"
-    },
-    {
-        kanji: "単語",
-        reading: "たんご",
-        meaning: "kosakata / kata"
-    },
-    {
-        kanji: "誕生",
-        reading: "たんじょう",
-        meaning: "kelahiran"
-    },
-    {
-        kanji: "代金",
-        reading: "だいきん",
-        meaning: "biaya / uang pembayaran"
-    },
-    {
-        kanji: "代表",
-        reading: "だいひょう",
-        meaning: "perwakilan / mewakili"
-    },
-    {
-        kanji: "団体",
-        reading: "だんたい",
-        meaning: "kelompok / organisasi / rombongan"
-    },
-    {
-        kanji: "地下",
-        reading: "ちか",
-        meaning: "bawah tanah"
-    },
-    {
-        kanji: "遅刻",
-        reading: "ちこく",
-        meaning: "keterlambatan / terlambat"
-    },
-    {
-        kanji: "知識",
-        reading: "ちしき",
-        meaning: "pengetahuan"
-    },
-    {
-        kanji: "中心",
-        reading: "ちゅうしん",
-        meaning: "pusat / tengah-tengah"
-    },
-    {
-        kanji: "中旬",
-        reading: "ちゅうじゅん",
-        meaning: "pertengahan bulan (tanggal 11-20)"
-    },
-    {
-        kanji: "注文",
-        reading: "ちゅうもん",
-        meaning: "pesanan / memesan"
-    },
-    {
-        kanji: "調査",
-        reading: "ちょうさ",
-        meaning: "penyelidikan / survei / investigasi"
-    },
-    {
-        kanji: "調子",
-        reading: "ちょうし",
-        meaning: "kondisi / keadaan (kesehatan/mesin)"
-    },
-    {
-        kanji: "頂上",
-        reading: "ちょうじょう",
-        meaning: "puncak (gunung/bukit)"
-    },
-    {
-        kanji: "通学",
-        reading: "つうがく",
-        meaning: "pergi ke sekolah"
-    },
-    {
-        kanji: "通勤",
-        reading: "つうきん",
-        meaning: "pergi bekerja"
-    },
-    {
-        kanji: "通訳",
-        reading: "つうやく",
-        meaning: "penerjemahan lisan / juru bahasa"
-    },
-    {
-        kanji: "通路",
-        reading: "つうろ",
-        meaning: "jalan kecil / lorong / gang"
-    },
-    {
-        kanji: "定員",
-        reading: "ていいん",
-        meaning: "kapasitas / kuota orang"
-    },
-    {
-        kanji: "低下",
-        reading: "ていか",
-        meaning: "penurunan / kemerosotan"
-    },
-    {
-        kanji: "定期",
-        reading: "ていき",
-        meaning: "tiket berlangganan (tiket terusan) / berkala"
-    },
-    {
-        kanji: "停電",
-        reading: "ていでん",
-        meaning: "pemadaman listrik / mati lampu"
-    },
-    {
-        kanji: "手帳",
-        reading: "てちょう",
-        meaning: "buku catatan / agenda"
-    },
-    {
-        kanji: "鉄道",
-        reading: "てつどう",
-        meaning: "rel kereta / jalan kereta api"
-    },
-    {
-        kanji: "手袋",
-        reading: "てぶくろ",
-        meaning: "sarung tangan"
-    },
-    {
-        kanji: "転勤",
-        reading: "てんきん",
-        meaning: "pindah tugas kerja / mutasi"
-    },
-    {
-        kanji: "天井",
-        reading: "てんじょう",
-        meaning: "langit-langit / plafon"
-    },
-    {
-        kanji: "店長",
-        reading: "てんちょう",
-        meaning: "manajer toko / kepala toko"
-    },
-    {
-        kanji: "電球",
-        reading: "でんきゅう",
-        meaning: "bohlam lampu"
-    },
-    {
-        kanji: "伝言",
-        reading: "でんごん",
-        meaning: "pesan (lisan/titipan)"
-    },
-    {
-        kanji: "当日",
-        reading: "とうじつ",
-        meaning: "hari H / pada hari tersebut"
-    },
-    {
-        kanji: "登場",
-        reading: "とうじょう",
-        meaning: "kemunculan / tampil (di panggung/layar)"
-    },
-    {
-        kanji: "到着",
-        reading: "とうちゃく",
-        meaning: "kedatangan / tiba"
-    },
-    {
-        kanji: "都会",
-        reading: "とかい",
-        meaning: "kota besar / metropolitan"
-    },
-    {
-        kanji: "特徴",
-        reading: "とくちょう",
-        meaning: "ciri khas / karakteristik"
-    },       
+            { kanji: "合図", reading: "あいず", meaning: "isyarat / sinyal" },
+            { kanji: "青空", reading: "あおぞら", meaning: "langit biru" },
+            { kanji: "以外", reading: "いがい", meaning: "selain / kecuali" },
+            { kanji: "以後", reading: "いご", meaning: "setelah ini / selanjutnya" },
+            { kanji: "以降", reading: "いこう", meaning: "sejak / mulai dari (waktu tertentu)" },
+            { kanji: "維持", reading: "いじ", meaning: "pemeliharaan / mempertahankan" },
+            { kanji: "意識", reading: "いしき", meaning: "kesadaran" },
+            { kanji: "以前", reading: "いぜん", meaning: "sebelum / dahulu" },
+            { kanji: "位置", reading: "いち", meaning: "posisi / letak" },
+            { kanji: "一流", reading: "いちりゅう", meaning: "kelas satu / terkemuka / papan atas" },
+            { kanji: "一般", reading: "いっぱん", meaning: "umum / biasa" },
+            { kanji: "移動", reading: "いどう", meaning: "perpindahan / pergerakan" },
+            { kanji: "以内", reading: "いない", meaning: "dalam kurun / tidak lebih dari" },
+            { kanji: "田舎", reading: "いなか", meaning: "desa / kampung halaman" },
+            { kanji: "印刷", reading: "いんさつ", meaning: "pencetakan / print" },
+            { kanji: "印象", reading: "いんしょう", meaning: "kesan" },
+            { kanji: "飲料", reading: "いんりょう", meaning: "minuman" },
+            { kanji: "内側", reading: "うちがわ", meaning: "bagian dalam" },
+            { kanji: "宇宙", reading: "うちゅう", meaning: "alam semesta / luar angkasa" },
+            { kanji: "影響", reading: "えいきょう", meaning: "pengaruh / dampak" },
+            { kanji: "営業", reading: "えいぎょう", meaning: "bisnis / penjualan / beroperasi" },
+            { kanji: "栄養", reading: "えいよう", meaning: "nutrisi / gizi" },
+            { kanji: "笑顔", reading: "えがお", meaning: "wajah tersenyum / senyuman" },
+            { kanji: "延期", reading: "えんき", meaning: "penundaan" },
+            { kanji: "演奏", reading: "えんそう", meaning: "pertunjukan musik" },
+            { kanji: "遠慮", reading: "えんりょ", meaning: "segan / menahan diri" },
+            { kanji: "往復", reading: "おうふく", meaning: "pulang pergi (perjalanan)" },
+            { kanji: "応募", reading: "おうぼ", meaning: "pendaftaran / lamaran" },
+            { kanji: "応用", reading: "おうよう", meaning: "penerapan / aplikasi" },
+            { kanji: "大勢", reading: "おおぜい", meaning: "banyak orang" },
+            { kanji: "親子", reading: "おやこ", meaning: "orang tua dan anak" },
+            { kanji: "温泉", reading: "おんせん", meaning: "pemandian air panas" },
+            { kanji: "会員", reading: "かいいん", meaning: "anggota / member" },
+            { kanji: "絵画", reading: "かいが", meaning: "lukisan" },
+            { kanji: "会議", reading: "かいぎ", meaning: "rapat / konferensi" },
+            { kanji: "会計", reading: "かいけい", meaning: "akuntansi / pembayaran (kasir)" },
+            { kanji: "解決", reading: "かいけつ", meaning: "penyelesaian / solusi" },
+            { kanji: "回収", reading: "かいしゅう", meaning: "pengumpulan / penarikan kembali" },
+            { kanji: "開始", reading: "かいし", meaning: "permulaan / pembukaan" },
+            { kanji: "開場", reading: "かいじょう", meaning: "pembukaan tempat / venue" },
+            { kanji: "回数", reading: "かいすう", meaning: "frekuensi / jumlah kali" },
+            { kanji: "解説", reading: "かいせつ", meaning: "penjelasan / uraian" },
+            { kanji: "階段", reading: "かいだん", meaning: "tangga" },
+            { kanji: "開店", reading: "かいてん", meaning: "pembukaan toko" },
+            { kanji: "価格", reading: "かかく", meaning: "harga" },
+            { kanji: "各地", reading: "かくち", meaning: "berbagai tempat / tiap daerah" },
+            { kanji: "確認", reading: "かくにん", meaning: "konfirmasi / pengecekan" },
+            { kanji: "過去", reading: "かこ", meaning: "masa lalu / lampau" },
+            { kanji: "火災", reading: "かさい", meaning: "kebakaran" },
+            { kanji: "花壇", reading: "かだん", meaning: "bedeng bunga / taman bunga" },
+            { kanji: "価値", reading: "かち", meaning: "nilai / harga diri" },
+            { kanji: "課長", reading: "かちょう", meaning: "kepala seksi / kepala bagian" },
+            { kanji: "各国", reading: "かっこく", meaning: "setiap negara / berbagai negara" },
+            { kanji: "活動", reading: "かつどう", meaning: "aktivitas / kegiatan" },
+            { kanji: "家庭", reading: "かてい", meaning: "rumah tangga / keluarga" },
+            { kanji: "花瓶", reading: "かびん", meaning: "vas bunga" },
+            { kanji: "髪型", reading: "かみがた", meaning: "gaya rambut" },
+            { kanji: "観客", reading: "かんきゃく", meaning: "penonton / pengunjung" },
+            { kanji: "環境", reading: "かんきょう", meaning: "lingkungan" },
+            { kanji: "関係", reading: "かんけい", meaning: "hubungan / kaitan" },
+            { kanji: "歓迎", reading: "かんげい", meaning: "penyambutan / selamat datang" },
+            { kanji: "感激", reading: "かんげき", meaning: "terharu / tersentuh" },
+            { kanji: "観光", reading: "かんこう", meaning: "pariwisata / tamasya" },
+            { kanji: "看護", reading: "かんご", meaning: "keperawatan / merawat pasien" },
+            { kanji: "観察", reading: "かんさつ", meaning: "pengamatan / observasi" },
+            { kanji: "感謝", reading: "かんしゃ", meaning: "rasa terima kasih / apresiasi" },
+            { kanji: "感心", reading: "かんしん", meaning: "kagum / terkesan" },
+            { kanji: "関心", reading: "かんしん", meaning: "minat / kepedulian" },
+            { kanji: "完成", reading: "かんせい", meaning: "penyelesaian / pembuatannya selesai" },
+            { kanji: "乾燥", reading: "かんそう", meaning: "pengeringan / kering" },
+            { kanji: "感想", reading: "かんそう", meaning: "kesan / pendapat" },
+            { kanji: "感動", reading: "かんどう", meaning: "terharu / terkesan mendalam" },
+            { kanji: "館内", reading: "かんない", meaning: "di dalam gedung / fasilitas" },
+            { kanji: "外出", reading: "がいしゅつ", meaning: "bepergian keluar" },
+            { kanji: "外食", reading: "がいしょく", meaning: "makan di luar" },
+            { kanji: "画家", reading: "がか", meaning: "pelukis" },
+            { kanji: "学部", reading: "がくぶ", meaning: "fakultas / jurusan" },
+            { kanji: "学期", reading: "がっき", meaning: "semester / masa studi" },
+            { kanji: "楽器", reading: "がっき", meaning: "alat musik" },
+            { kanji: "我慢", reading: "がまん", meaning: "kesabaran / menahan diri" },
+            { kanji: "気温", reading: "きおん", meaning: "suhu udara" },
+            { kanji: "機械", reading: "きかい", meaning: "mesin" },
+            { kanji: "期間", reading: "きかん", meaning: "jangka waktu / periode" },
+            { kanji: "企業", reading: "きぎょう", meaning: "perusahaan / korporasi" },
+            { kanji: "期限", reading: "きげん", meaning: "tenggat waktu / batas waktu" },
+            { kanji: "帰国", reading: "きこく", meaning: "pulang ke negara asal" },
+            { kanji: "記事", reading: "きじ", meaning: "artikel / berita" },
+            { kanji: "基礎", reading: "きそ", meaning: "dasar / fondasi" },
+            { kanji: "規則", reading: "きそく", meaning: "peraturan / aturan" },
+            { kanji: "期待", reading: "きたい", meaning: "harapan / ekspektasi" },
+            { kanji: "北側", reading: "きたがわ", meaning: "sebelah utara / sisi utara" },
+            { kanji: "帰宅", reading: "きたく", meaning: "pulang ke rumah" },
+            { kanji: "切符", reading: "きっぷ", meaning: "tiket" },
+            { kanji: "記念", reading: "きねん", meaning: "peringatan / kenang-kenangan" },
+            { kanji: "基本", reading: "きほん", meaning: "dasar / standar" },
+            { kanji: "希望", reading: "きぼう", meaning: "harapan / keinginan" },
+            { kanji: "競争", reading: "きょうそう", meaning: "persaingan / kompetisi" },
+            { kanji: "共通", reading: "きょうつう", meaning: "kesamaan / umum" },
+            { kanji: "協力", reading: "きょうりょく", meaning: "kerja sama" },
+            { kanji: "距離", reading: "きょり", meaning: "jarak" },
+            { kanji: "記録", reading: "きろく", meaning: "catatan / rekor" },
+            { kanji: "近所", reading: "きんじょ", meaning: "lingkungan sekitar / tetangga" },
+            { kanji: "技術", reading: "ぎじゅつ", meaning: "teknologi / teknik / keahlian" },
+            { kanji: "草花", reading: "くさばな", meaning: "rumput dan bunga / tanaman hias" },
+            { kanji: "工夫", reading: "くふう", meaning: "akal / usaha kreatif / cara cerdik" },
+            { kanji: "区別", reading: "くべつ", meaning: "pembedaan / membedakan" },
+            { kanji: "苦労", reading: "くろう", meaning: "kesusahan / kerja keras" },
+            { kanji: "訓練", reading: "くんれん", meaning: "pelatihan / latihan" },
+            { kanji: "偶然", reading: "ぐうぜん", meaning: "kebetulan" },
+            { kanji: "経営", reading: "けいえい", meaning: "manajemen / pengelolaan bisnis" },
+            { kanji: "計画", reading: "けいかく", meaning: "rencana / perencanaan" },
+            { kanji: "警官", reading: "けいかん", meaning: "polisi / opsir polisi" },
+            { kanji: "経験", reading: "けいけん", meaning: "pengalaman" },
+            { kanji: "経済", reading: "けいざい", meaning: "ekonomi" },
+            { kanji: "警察", reading: "けいさつ", meaning: "kepolisian" },
+            { kanji: "携帯", reading: "けいたい", meaning: "membawa / HP (telepon genggam)" },
+            { kanji: "経由", reading: "けいゆ", meaning: "transit / melalui" },
+            { kanji: "景色", reading: "けしき", meaning: "pemandangan" },
+            { kanji: "結局", reading: "けっきょく", meaning: "pada akhirnya" },
+            { kanji: "結構", reading: "けっこう", meaning: "cukup / lumayan / bagus" },
+            { kanji: "結婚", reading: "けっこん", meaning: "pernikahan" },
+            { kanji: "欠点", reading: "けってん", meaning: "kekurangan / kelemahan" },
+            { kanji: "健康", reading: "けんこう", meaning: "kesehatan" },
+            { kanji: "検査", reading: "けんさ", meaning: "pemeriksaan / inspeksi" },
+            { kanji: "建設", reading: "けんせつ", meaning: "konstruksi / pembangunan" },
+            { kanji: "建築", reading: "けんちく", meaning: "arsitektur / bangunan" },
+            { kanji: "芸術", reading: "げいじゅつ", meaning: "seni / kesenian" },
+            { kanji: "原因", reading: "げんいん", meaning: "penyebab / alasan" },
+            { kanji: "原稿", reading: "げんこう", meaning: "naskah / draf" },
+            { kanji: "言語", reading: "げんご", meaning: "bahasa" },
+            { kanji: "減少", reading: "げんしょう", meaning: "pengurangan / penurunan" },
+            { kanji: "講演", reading: "こうえん", meaning: "ceramah / kuliah umum" },
+            { kanji: "高温", reading: "こうおん", meaning: "suhu tinggi" },
+            { kanji: "効果", reading: "こうか", meaning: "efek / khasiat / hasil" },
+            { kanji: "交換", reading: "こうかん", meaning: "pertukaran / penukaran" },
+            { kanji: "後期", reading: "こうき", meaning: "semester / periode akhir" },
+            { kanji: "講義", reading: "こうぎ", meaning: "perkuliahan / kuliah" },
+            { kanji: "公共", reading: "こうきょう", meaning: "umum / publik" },
+            { kanji: "工業", reading: "こうぎょう", meaning: "industri" },
+            { kanji: "航空", reading: "こうくう", meaning: "penerbangan / penerbangan udara" },
+            { kanji: "広告", reading: "こうこく", meaning: "iklan / reklame" },
+            { kanji: "工事", reading: "こうじ", meaning: "konstruksi / pekerjaan jalan / bangunan" },
+            { kanji: "紅茶", reading: "こうちゃ", meaning: "teh hitam" },
+            { kanji: "交通", reading: "こうつう", meaning: "lalu lintas / transportasi" },
+            { kanji: "行動", reading: "こうどう", meaning: "tindakan / aksi" },
+            { kanji: "後半", reading: "こうはん", meaning: "paruh kedua / babak kedua" },
+            { kanji: "後方", reading: "こうほう", meaning: "bagian belakang" },
+            { kanji: "交流", reading: "こうりゅう", meaning: "pertukaran (budaya/sosial) / interaksi" },
+            { kanji: "国語", reading: "こくご", meaning: "bahasa nasional (bahasa Jepang)" },
+            { kanji: "国際", reading: "こくさい", meaning: "internasional" },
+            { kanji: "個人", reading: "こじん", meaning: "individu / perseorangan" },
+            { kanji: "混雑", reading: "こんざつ", meaning: "kemacetan / keramaian / padat" },
+            { kanji: "合格", reading: "ごうかく", meaning: "lulus (ujian)" },
+            { kanji: "合計", reading: "ごうけい", meaning: "total / jumlah keseluruhan" },
+            { kanji: "最終", reading: "さいしゅう", meaning: "terakhir / final" },
+            { kanji: "最初", reading: "さいしょ", meaning: "awal / pertama kali" },
+            { kanji: "財布", reading: "さいふ", meaning: "dompet" },
+            { kanji: "作業", reading: "さぎょう", meaning: "pekerjaan / aktivitas kerja" },
+            { kanji: "作者", reading: "さくしゃ", meaning: "pembuat / penulis / pengarang" },
+            { kanji: "作品", reading: "さくひん", meaning: "karya (seni/sastra/dll.)" },
+            { kanji: "昨夜", reading: "さくや", meaning: "tadi malam / semalam" },
+            { kanji: "作家", reading: "さっか", meaning: "penulis / pengarang" },
+            { kanji: "算数", reading: "さんすう", meaning: "matematika dasar / berhitung" },
+            { kanji: "賛成", reading: "さんせい", meaning: "persetujuan / setuju" },
+            { kanji: "材料", reading: "ざいりょう", meaning: "bahan / material" },
+            { kanji: "雑誌", reading: "ざっし", meaning: "majalah" },
+            { kanji: "試験", reading: "しけん", meaning: "ujian / tes" },
+            { kanji: "資源", reading: "しげん", meaning: "sumber daya" },
+            { kanji: "指示", reading: "しじ", meaning: "petunjuk / instruksi" },
+            { kanji: "姿勢", reading: "しせい", meaning: "sikap tubuh / postur / sikap" },
+            { kanji: "自然", reading: "しぜん", meaning: "alam / alami" },
+            { kanji: "市長", reading: "しちょう", meaning: "walikota" },
+            { kanji: "失敗", reading: "しっぱい", meaning: "kegagalan / gagal" },
+            { kanji: "指定", reading: "してい", meaning: "penunjukan / penentuan" },
+            { kanji: "支店", reading: "してん", meaning: "cabang toko / kantor cabang" },
+            { kanji: "指導", reading: "しどう", meaning: "bimbingan / arahan" },
+            { kanji: "始発", reading: "しはつ", meaning: "keberangkatan pertama (kereta/bus)" },
+            { kanji: "芝生", reading: "しばふ", meaning: "rumput / halaman rumput" },
+            { kanji: "市民", reading: "しみん", meaning: "warga kota / penduduk" },
+            { kanji: "氏名", reading: "しめい", meaning: "nama lengkap" },
+            { kanji: "車内", reading: "しゃない", meaning: "di dalam kendaraan / kereta" },
+            { kanji: "習慣", reading: "しゅうかん", meaning: "kebiasaan / tradisi" },
+            { kanji: "就職", reading: "しゅうしょく", meaning: "dapat kerja / bekerja" },
+            { kanji: "集中", reading: "しゅうちゅう", meaning: "konsentrasi / pemusatan" },
+            { kanji: "収入", reading: "しゅうにゅう", meaning: "pendapatan / penghasilan" },
+            { kanji: "終了", reading: "しゅうりょう", meaning: "penyelesaian / berakhir" },
+            { kanji: "祝日", reading: "しゅくじつ", meaning: "hari libur nasional" },
+            { kanji: "手術", reading: "しゅじゅつ", meaning: "operasi (medis)" },
+            { kanji: "手段", reading: "しゅだん", meaning: "sarana / cara / metode" },
+            { kanji: "主張", reading: "しゅちょう", meaning: "klaim / pendapat / penegasan" },
+            { kanji: "出勤", reading: "しゅっきん", meaning: "masuk kerja" },
+            { kanji: "出身", reading: "しゅっしん", meaning: "asal (daerah/kota/kelahiran)" },
+            { kanji: "種類", reading: "しゅるい", meaning: "jenis / macam" },
+            { kanji: "使用", reading: "しよう", meaning: "penggunaan / pemakaian" },
+            { kanji: "紹介", reading: "しょうかい", meaning: "perkenalan / penyampaian" },
+            { kanji: "招待", reading: "しょうたい", meaning: "undangan" },
+            { kanji: "消費", reading: "しょうひ", meaning: "konsumsi / pemakaian" },
+            { kanji: "商品", reading: "しょうひん", meaning: "barang dagangan / produk" },
+            { kanji: "証明", reading: "しょうめい", meaning: "pembuktian / bukti" },
+            { kanji: "正面", reading: "しょうめん", meaning: "bagian depan / tampak depan" },
+            { kanji: "将来", reading: "しょうらい", meaning: "masa depan" },
+            { kanji: "食欲", reading: "しょくよく", meaning: "nafsu makan" },
+            { kanji: "食器", reading: "しょっき", meaning: "peralatan makan" },
+            { kanji: "書類", reading: "しょるい", meaning: "dokumen / berkas" },
+            { kanji: "資料", reading: "しりょう", meaning: "bahan materi / data / dokumen" },
+            { kanji: "進学", reading: "しんがく", meaning: "melanjutkan pendidikan" },
+            { kanji: "進行", reading: "しんこう", meaning: "kemajuan / proses berlangsung" },
+            { kanji: "申請", reading: "しんせい", meaning: "permohonan / pengajuan (aplikasi)" },
+            { kanji: "心臓", reading: "しんぞう", meaning: "jantung" },
+            { kanji: "心配", reading: "しんぱい", meaning: "kekhawatiran / cemas" },
+            { kanji: "進歩", reading: "しんぽ", meaning: "kemajuan / perkembangan" },
+            { kanji: "森林", reading: "しんりん", meaning: "hutan" },
+            { kanji: "時期", reading: "じき", meaning: "waktu / periode / musim" },
+            { kanji: "時給", reading: "じきゅう", meaning: "upah per jam" },
+            { kanji: "事件", reading: "じけん", meaning: "insiden / kasus / kejadian" },
+            { kanji: "時刻", reading: "じこく", meaning: "waktu / jam" },
+            { kanji: "持参", reading: "じさん", meaning: "membawa serta" },
+            { kanji: "事情", reading: "じじょう", meaning: "keadaan / situasi / alasan" },
+            { kanji: "自信", reading: "じしん", meaning: "percaya diri" },
+            { kanji: "時代", reading: "じだい", meaning: "zaman / era" },
+            { kanji: "自宅", reading: "じたく", meaning: "rumah sendiri" },
+            { kanji: "実家", reading: "じっか", meaning: "rumah orang tua / rumah asal" },
+            { kanji: "実験", reading: "じっけん", meaning: "eksperimen / percobaan" },
+            { kanji: "実行", reading: "じっこう", meaning: "pelaksanaan / eksekusi" },
+            { kanji: "実用", reading: "じつよう", meaning: "penggunaan praktis" },
+            { kanji: "実力", reading: "じつりょく", meaning: "kemampuan sebenarnya" },
+            { kanji: "自慢", reading: "じまん", meaning: "membanggakan diri / pamer" },
+            { kanji: "事務", reading: "じむ", meaning: "administrasi / pekerjaan kantor" },
+            { kanji: "渋滞", reading: "じゅうたい", meaning: "kemacetan (lalu lintas)" },
+            { kanji: "受験", reading: "じゅけん", meaning: "mengikuti ujian" },
+            { kanji: "重要", reading: "じゅうよう", meaning: "penting / krusial" },
+            { kanji: "順番", reading: "じゅんばん", meaning: "urutan / giliran" },
+            { kanji: "準備", reading: "じゅんび", meaning: "persiapan" },
+            { kanji: "上司", reading: "じょうし", meaning: "atasan (dalam pekerjaan)" },
+            { kanji: "乗車", reading: "じょうしゃ", meaning: "naik kendaraan / menumpang" },
+            { kanji: "状態", reading: "じょうたい", meaning: "kondisi / keadaan" },
+            { kanji: "冗談", reading: "じょうだん", meaning: "lelucon / gurauan" },
+            { kanji: "女性", reading: "じょせい", meaning: "wanita / perempuan" },
+            { kanji: "神社", reading: "じんじゃ", meaning: "kuil Shinto" },
+            { kanji: "人生", reading: "じんせい", meaning: "kehidupan (manusia)" },
+            { kanji: "人体", reading: "じんたい", meaning: "tubuh manusia" },
+            { kanji: "睡眠", reading: "すいみん", meaning: "tidur" },
+            { kanji: "数学", reading: "すうがく", meaning: "matematika" },
+            { kanji: "数字", reading: "すうじ", meaning: "angka / digit" },
+            { kanji: "正解", reading: "せいかい", meaning: "jawaban benar" },
+            { kanji: "制限", reading: "せいげん", meaning: "pembatasan / batasan" },
+            { kanji: "清掃", reading: "せいそう", meaning: "pembersihan" },
+            { kanji: "制服", reading: "せいふく", meaning: "seragam" },
+            { kanji: "設備", reading: "せつび", meaning: "fasilitas / perlengkapan" },
+            { kanji: "先日", reading: "せんじつ", meaning: "beberapa hari yang lalu" },
+            { kanji: "洗濯", reading: "せんたく", meaning: "mencuci pakaian" },
+            { kanji: "宣伝", reading: "せんでん", meaning: "promosi / propaganda / iklan" },
+            { kanji: "先輩", reading: "せんぱい", meaning: "senior" },
+            { kanji: "専門", reading: "せんもん", meaning: "bidang keahlian / spesialisasi" },
+            { kanji: "全員", reading: "ぜんいん", meaning: "semua anggota / seluruh orang" },
+            { kanji: "前後", reading: "ぜんご", meaning: "depan belakang / kurang lebih" },
+            { kanji: "前半", reading: "ぜんはん", meaning: "paruh pertama / babak pertama" },
+            { kanji: "倉庫", reading: "そうこ", meaning: "gudang" },
+            { kanji: "掃除", reading: "そうじ", meaning: "membersihkan / menyapu-ngepel" },
+            { kanji: "送信", reading: "そうしん", meaning: "pengiriman (pesan/data)" },
+            { kanji: "想像", reading: "そうぞう", meaning: "imajinasi / membayangkan" },
+            { kanji: "早朝", reading: "そうちょう", meaning: "pagi-pagi sekali / dini hari" },
+            { kanji: "送料", reading: "そうりょう", meaning: "ongkos kirim (ongkir)" },
+            { kanji: "外側", reading: "そとがわ", meaning: "bagian luar / sisi luar" },
+            { kanji: "尊敬", reading: "そんけい", meaning: "rasa hormat / menghormati" },
+            { kanji: "増加", reading: "ぞうか", meaning: "peningkatan / pertambahan" },
+            { kanji: "滞在", reading: "たいざい", meaning: "tinggal sementara / menginap" },
+            { kanji: "体操", reading: "たいそう", meaning: "senam / latihan fisik" },
+            { kanji: "大量", reading: "たいりょう", meaning: "jumlah besar / jumlah banyak" },
+            { kanji: "体力", reading: "たいりょく", meaning: "stamina / kekuatan fisik" },
+            { kanji: "単語", reading: "たんご", meaning: "kosakata / kata" },
+            { kanji: "誕生", reading: "たんじょう", meaning: "kelahiran" },
+            { kanji: "代金", reading: "だいきん", meaning: "biaya / uang pembayaran" },
+            { kanji: "代表", reading: "だいひょう", meaning: "perwakilan / mewakili" },
+            { kanji: "団体", reading: "だんたい", meaning: "kelompok / organisasi / rombongan" },
+            { kanji: "地下", reading: "ちか", meaning: "bawah tanah" },
+            { kanji: "遅刻", reading: "ちこく", meaning: "keterlambatan / terlambat" },
+            { kanji: "知識", reading: "ちしき", meaning: "pengetahuan" },
+            { kanji: "中心", reading: "ちゅうしん", meaning: "pusat / tengah-tengah" },
+            { kanji: "中旬", reading: "ちゅうじゅん", meaning: "pertengahan bulan (tanggal 11-20)" },
+            { kanji: "注文", reading: "ちゅうもん", meaning: "pesanan / memesan" },
+            { kanji: "調査", reading: "ちょうさ", meaning: "penyelidikan / survei / investigasi" },
+            { kanji: "調子", reading: "ちょうし", meaning: "kondisi / keadaan (kesehatan/mesin)" },
+            { kanji: "頂上", reading: "ちょうじょう", meaning: "puncak (gunung/bukit)" },
+            { kanji: "通学", reading: "つうがく", meaning: "pergi ke sekolah" },
+            { kanji: "通勤", reading: "つうきん", meaning: "pergi bekerja" },
+            { kanji: "通訳", reading: "つうやく", meaning: "penerjemahan lisan / juru bahasa" },
+            { kanji: "通路", reading: "つうろ", meaning: "jalan kecil / lorong / gang" },
+            { kanji: "定員", reading: "ていいん", meaning: "kapasitas / kuota orang" },
+            { kanji: "低下", reading: "ていか", meaning: "penurunan / kemerosotan" },
+            { kanji: "定期", reading: "ていき", meaning: "tiket berlangganan (tiket terusan) / berkala" },
+            { kanji: "停電", reading: "ていでん", meaning: "pemadaman listrik / mati lampu" },
+            { kanji: "手帳", reading: "てちょう", meaning: "buku catatan / agenda" },
+            { kanji: "鉄道", reading: "てつどう", meaning: "rel kereta / jalan kereta api" },
+            { kanji: "手袋", reading: "てぶくろ", meaning: "sarung tangan" },
+            { kanji: "転勤", reading: "てんきん", meaning: "pindah tugas kerja / mutasi" },
+            { kanji: "天井", reading: "てんじょう", meaning: "langit-langit / plafon" },
+            { kanji: "店長", reading: "てんちょう", meaning: "manajer toko / kepala toko" },
+            { kanji: "電球", reading: "でんきゅう", meaning: "bohlam lampu" },
+            { kanji: "伝言", reading: "でんごん", meaning: "pesan (lisan/titipan)" },
+            { kanji: "当日", reading: "とうじつ", meaning: "hari H / pada hari tersebut" },
+            { kanji: "登場", reading: "とうじょう", meaning: "kemunculan / tampil (di panggung/layar)" },
+            { kanji: "到着", reading: "とうちゃく", meaning: "kedatangan / tiba" },
+            { kanji: "都会", reading: "とかい", meaning: "kota besar / metropolitan" },
+            { kanji: "特徴", reading: "とくちょう", meaning: "ciri khas / karakteristik" }
         ];
 
-        let deck = [...rawVocabData];
-let currentIndex = 0;
-let isFlipped = false;
+        // SRS State Management
+        let srsData = {};
+        let deck = [];
+        let currentIndex = 0;
+        let isFlipped = false;
+        let currentDeckFilter = 'all'; // all, due, new, learning, mastered
+        let currentCardType = 'A'; // A, B, C, D
 
-// Menyimpan Kanji yang sudah dipahami
-let masteredSet = new Set();
-
-// Filter deck yang sedang digunakan
-// all = semua
-// unmastered = belum paham
-// mastered = sudah paham
-let currentDeckFilter = 'all';
-
-let currentQuizIndex = 0;
-let quizScore = 0;
-let quizOptions = [];
+        // Quiz Variables
+        let currentQuizIndex = 0;
+        let quizScore = 0;
 
         // DOM Elements
         const flashcardEl = document.getElementById('flashcard');
-        const cardKanjiEl = document.getElementById('card-kanji');
-        const cardReadingEl = document.getElementById('card-reading');
-        const cardMeaningEl = document.getElementById('card-meaning');
-        const cardKanjiSubEl = document.getElementById('card-kanji-sub');
+        const cardFrontTagEl = document.getElementById('card-front-tag');
+        const cardStatusBadgeEl = document.getElementById('card-status-badge');
+        const cardFrontMainEl = document.getElementById('card-front-main');
+        const cardFrontSubEl = document.getElementById('card-front-sub');
+        const cardBackMainEl = document.getElementById('card-back-main');
+        const cardBackMeaningEl = document.getElementById('card-back-meaning');
+        const cardBackExtraEl = document.getElementById('card-back-extra');
+        const cardBackFooterEl = document.getElementById('card-back-footer');
         const cardCounterEl = document.getElementById('card-counter');
-        const masteredCountEl = document.getElementById('mastered-count');
+        const cardTypeLabelEl = document.getElementById('card-type-label');
         const progressBarEl = document.getElementById('progress-bar');
-        const masterBtnEl = document.getElementById('master-btn');
-        const masterBtnTextEl = document.getElementById('master-btn-text');
 
-        // Initialize App
+        // Initial Launch
         window.addEventListener('DOMContentLoaded', () => {
-    loadMasteredFromStorage();
+            loadSRSData();
+            updateDeck();
+            updateStatistics();
+            updateDeckCounts();
+            updateFilterButtons();
+            updateCardDisplay();
+            renderVocabGrid();
+            setupKeyboardListeners();
+        });
 
-    // Pastikan deck pertama kali berisi semua kosakata
-    currentDeckFilter = 'all';
-    updateDeck();
+        // Load & Save LocalStorage
+        function loadSRSData() {
+            const saved = localStorage.getItem('jp_n2_srs_data');
+            if (saved) {
+                try {
+                    srsData = JSON.parse(saved);
+                } catch(e) {
+                    srsData = {};
+                }
+            }
+        }
 
-    // Update jumlah
-    updateDeckCounts();
+        function saveSRS() {
+            localStorage.setItem('jp_n2_srs_data', JSON.stringify(srsData));
+        }
 
-    // Update tombol filter
-    updateFilterButtons();
+        // 2. SRS Algorithm & Interval Calculator
+        function reviewCard(rating) {
+            if (deck.length === 0) return;
 
-    // Tampilkan kartu
-    updateCardDisplay();
+            const item = deck[currentIndex];
+            const kanji = item.kanji;
 
-    // Daftar kosakata
-    renderVocabGrid();
+            if (!srsData[kanji]) {
+                srsData[kanji] = { status: "learning", interval: 0, due: Date.now(), reviews: 0 };
+            }
 
-    // Quiz
-    initQuiz();
+            const card = srsData[kanji];
 
-    // Keyboard
-    setupKeyboardListeners();
-});
+            if (rating === "again") {
+                card.interval = 0;
+                card.due = Date.now() + (10 * 60 * 1000); // 10 menit
+                card.status = "learning";
+            } else if (rating === "hard") {
+                card.interval = Math.max(1, card.interval);
+                card.due = Date.now() + (card.interval * 24 * 60 * 60 * 1000); // 1 hari
+                card.status = "learning";
+            } else if (rating === "good") {
+                card.interval = getNextInterval(card.interval, "good");
+                card.due = Date.now() + (card.interval * 24 * 60 * 60 * 1000);
+                if (card.interval >= 30) card.status = "mastered";
+                else card.status = "learning";
+            } else if (rating === "easy") {
+                card.interval = getNextInterval(card.interval, "easy");
+                card.due = Date.now() + (card.interval * 24 * 60 * 60 * 1000);
+                if (card.interval >= 30) card.status = "mastered";
+                else card.status = "learning";
+            }
 
+            card.reviews++;
+            saveSRS();
+            updateStatistics();
+            updateDeckCounts();
+
+            // Pindah ke kartu berikutnya
+            nextCard();
+        }
+
+        function getNextInterval(interval, rating) {
+            if (rating === "good") {
+                if (interval === 0) return 3;
+                if (interval === 3) return 7;
+                if (interval === 7) return 14;
+                if (interval === 14) return 30;
+                if (interval === 30) return 60;
+                if (interval === 60) return 120;
+                return Math.round(interval * 2);
+            }
+            if (rating === "easy") {
+                if (interval === 0) return 7;
+                if (interval === 7) return 14;
+                if (interval === 14) return 30;
+                if (interval === 30) return 60;
+                if (interval === 60) return 120;
+                return Math.round(interval * 2.5);
+            }
+            return 1;
+        }
+
+        // Filter Deck
+        function updateDeck() {
+            const now = Date.now();
+
+            if (currentDeckFilter === 'all') {
+                deck = [...rawVocabData];
+            } else if (currentDeckFilter === 'due') {
+                deck = rawVocabData.filter(item => {
+                    const card = srsData[item.kanji];
+                    return card && card.due <= now;
+                });
+            } else if (currentDeckFilter === 'new') {
+                deck = rawVocabData.filter(item => !srsData[item.kanji]);
+            } else if (currentDeckFilter === 'learning') {
+                deck = rawVocabData.filter(item => srsData[item.kanji]?.status === "learning");
+            } else if (currentDeckFilter === 'mastered') {
+                deck = rawVocabData.filter(item => srsData[item.kanji]?.status === "mastered");
+            }
+
+            if (deck.length === 0) {
+                currentIndex = 0;
+            } else if (currentIndex >= deck.length) {
+                currentIndex = 0;
+            }
+        }
+
+        function changeDeckFilter(filter) {
+            currentDeckFilter = filter;
+            currentIndex = 0;
+            updateDeck();
+            updateFilterButtons();
+            updateCardDisplay();
+        }
+
+        function updateFilterButtons() {
+            const filters = ['all', 'due', 'new', 'learning', 'mastered'];
+            filters.forEach(f => {
+                const btn = document.getElementById(`filter-${f}`);
+                if (btn) {
+                    if (f === currentDeckFilter) {
+                        btn.className = 'deck-filter-btn px-1 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white shadow-md transition-all';
+                    } else {
+                        btn.className = 'deck-filter-btn px-1 py-2 rounded-xl text-xs font-semibold bg-slate-700/60 text-slate-300 hover:text-white transition-all';
+                    }
+                }
+            });
+        }
+
+        function updateDeckCounts() {
+            const total = rawVocabData.length;
+            const now = Date.now();
+
+            const mastered = rawVocabData.filter(item => srsData[item.kanji]?.status === "mastered").length;
+            const learning = rawVocabData.filter(item => srsData[item.kanji]?.status === "learning").length;
+            const newCards = total - mastered - learning;
+            const dueCount = rawVocabData.filter(item => {
+                const card = srsData[item.kanji];
+                return card && card.due <= now;
+            }).length;
+
+            document.getElementById('count-all').textContent = total;
+            document.getElementById('count-due').textContent = dueCount;
+            document.getElementById('count-new').textContent = newCards;
+            document.getElementById('count-learning').textContent = learning;
+            document.getElementById('count-mastered').textContent = mastered;
+            document.getElementById('vocab-total-header').textContent = `Kosakata N2 (${total} Kata)`;
+        }
+
+        // 3. Render Card Display (Multi-Type Cards Support)
         function updateCardDisplay() {
-    // Jika deck kosong
-    if (deck.length === 0) {
-        isFlipped = false;
-        flashcardEl.classList.remove('rotate-y-180');
+            if (deck.length === 0) {
+                isFlipped = false;
+                flashcardEl.classList.remove('rotate-y-180');
+                cardFrontTagEl.textContent = 'Kosong';
+                cardStatusBadgeEl.textContent = '—';
+                cardFrontMainEl.textContent = '—';
+                cardFrontSubEl.classList.add('hidden');
+                cardBackMainEl.textContent = '—';
+                cardBackMeaningEl.textContent = 'Tidak ada kartu pada deck ini';
+                cardBackExtraEl.innerHTML = '';
+                cardCounterEl.textContent = '0 / 0';
+                progressBarEl.style.width = '0%';
+                return;
+            }
 
-        cardKanjiEl.textContent = '—';
-        cardReadingEl.textContent = '—';
-        cardMeaningEl.textContent = 'Tidak ada kosakata';
-        cardKanjiSubEl.textContent = 'Belum ada kartu';
+            // Kembalikan ke sisi depan
+            isFlipped = false;
+            flashcardEl.classList.remove('rotate-y-180');
 
-        cardCounterEl.textContent = 'Tidak ada kartu';
+            const item = deck[currentIndex];
+            const cardData = srsData[item.kanji];
 
-        progressBarEl.style.width = '0%';
+            // Penentuan status badge
+            if (!cardData) {
+                cardStatusBadgeEl.textContent = 'Baru';
+                cardStatusBadgeEl.className = 'bg-slate-700/60 border border-slate-600 text-slate-300 px-2 py-0.5 rounded text-[10px]';
+            } else if (cardData.status === 'mastered') {
+                cardStatusBadgeEl.textContent = '🟢 Dikuasai';
+                cardStatusBadgeEl.className = 'bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 px-2 py-0.5 rounded text-[10px]';
+            } else {
+                cardStatusBadgeEl.textContent = '🟡 Belajar';
+                cardStatusBadgeEl.className = 'bg-amber-950/60 border border-amber-500/40 text-amber-400 px-2 py-0.5 rounded text-[10px]';
+            }
 
-        const masteredCount = rawVocabData.filter(item =>
-            masteredSet.has(item.kanji)
-        ).length;
+            // Randomize atau pilih tipe kartu (Tipe A, B, C, D) berdasarkan kelengkapan data
+            const availableTypes = ['A', 'B'];
+            if (item.similar) availableTypes.push('C');
+            if (item.example) availableTypes.push('D');
 
-        masteredCountEl.textContent = `${masteredCount} Dipahami`;
+            currentCardType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
 
-        masterBtnEl.classList.remove(
-            'border-emerald-500',
-            'bg-emerald-950/40',
-            'text-emerald-400'
-        );
+            cardFrontSubEl.classList.add('hidden');
+            cardBackExtraEl.innerHTML = '';
 
-        masterBtnTextEl.textContent = 'Tidak Ada Kartu';
+            if (currentCardType === 'A') {
+                // Tipe A — Kanji → Reading + Arti
+                cardTypeLabelEl.textContent = "Tipe A: Kanji → Reading";
+                cardFrontTagEl.textContent = "Soal Kanji";
+                cardFrontMainEl.textContent = item.kanji;
+                
+                cardBackMainEl.textContent = item.reading;
+                cardBackMeaningEl.textContent = item.meaning;
+                if (item.example) {
+                    cardBackExtraEl.innerHTML = `<div class="text-indigo-300 font-semibold mb-0.5">${item.example}</div><div>${item.exampleMeaning}</div>`;
+                }
+            } else if (currentCardType === 'B') {
+                // Tipe B — Reading → Kanji + Arti
+                cardTypeLabelEl.textContent = "Tipe B: Reading → Kanji";
+                cardFrontTagEl.textContent = "Cara Baca (Hiragana)";
+                cardFrontMainEl.textContent = item.reading;
 
-        return;
-    }
+                cardBackMainEl.textContent = item.kanji;
+                cardBackMeaningEl.textContent = item.meaning;
+            } else if (currentCardType === 'C') {
+                // Tipe C — Sinonim / Konteks
+                cardTypeLabelEl.textContent = "Tipe C: Sinonim/Konteks";
+                cardFrontTagEl.textContent = "Persamaan Kata";
+                cardFrontMainEl.textContent = `「${item.similar}」`;
+                cardFrontSubEl.textContent = "Kata mana yang memiliki makna mirip?";
+                cardFrontSubEl.classList.remove('hidden');
 
-    // Reset kartu ke posisi depan
-    isFlipped = false;
-    flashcardEl.classList.remove('rotate-y-180');
+                cardBackMainEl.textContent = `${item.kanji} (${item.reading})`;
+                cardBackMeaningEl.textContent = item.meaning;
+            } else if (currentCardType === 'D') {
+                // Tipe D — Contoh Kalimat
+                cardTypeLabelEl.textContent = "Tipe D: Baca Dalam Kalimat";
+                cardFrontTagEl.textContent = "Contoh Kalimat";
+                
+                // Sensor kata sasaran dalam kalimat
+                const maskedExample = item.example.replace(item.kanji, " ____ ");
+                cardFrontMainEl.textContent = maskedExample;
+                cardFrontMainEl.className = "font-japanese text-2xl sm:text-3xl font-bold text-white tracking-normal leading-relaxed";
 
-    const item = deck[currentIndex];
+                cardBackMainEl.textContent = `${item.kanji} [${item.reading}]`;
+                cardBackMeaningEl.textContent = item.meaning;
+                cardBackExtraEl.innerHTML = `<div class="text-indigo-300 font-semibold mb-0.5">${item.exampleReading}</div><div>${item.exampleMeaning}</div>`;
+            }
 
-    cardKanjiEl.textContent = item.kanji;
-    cardReadingEl.textContent = item.reading;
-    cardMeaningEl.textContent = item.meaning;
-    cardKanjiSubEl.textContent =
-        `Kanji: ${item.kanji} (${item.reading})`;
+            // Kembalikan class default jika tipe bukan D
+            if (currentCardType !== 'D') {
+                cardFrontMainEl.className = "font-japanese text-6xl sm:text-7xl font-black text-white tracking-widest drop-shadow-md group-hover:scale-105 transition-transform";
+            }
 
-    // Counter
-    cardCounterEl.textContent =
-        `Kartu ${currentIndex + 1} dari ${deck.length}`;
-
-    // Progress bar
-    const progress =
-        ((currentIndex + 1) / deck.length) * 100;
-
-    progressBarEl.style.width = `${progress}%`;
-
-    // Jumlah sudah dipahami
-    const masteredCount = rawVocabData.filter(item =>
-        masteredSet.has(item.kanji)
-    ).length;
-
-    masteredCountEl.textContent =
-        `${masteredCount} Dipahami`;
-
-    // Status tombol
-    if (masteredSet.has(item.kanji)) {
-
-        masterBtnEl.classList.add(
-            'border-emerald-500',
-            'bg-emerald-950/40',
-            'text-emerald-400'
-        );
-
-        masterBtnTextEl.textContent =
-            'Sudah Dipahami';
-
-    } else {
-
-        masterBtnEl.classList.remove(
-            'border-emerald-500',
-            'bg-emerald-950/40',
-            'text-emerald-400'
-        );
-
-        masterBtnTextEl.textContent =
-            'Tandai Paham';
-    }
-
-    // Update jumlah di filter
-    updateDeckCounts();
-}
+            // Update Counter & Progress
+            cardCounterEl.textContent = `Kartu ${currentIndex + 1} dari ${deck.length}`;
+            const progress = ((currentIndex + 1) / deck.length) * 100;
+            progressBarEl.style.width = `${progress}%`;
+        }
 
         function flipCard() {
+            if (deck.length === 0) return;
             isFlipped = !isFlipped;
             if (isFlipped) {
                 flashcardEl.classList.add('rotate-y-180');
@@ -959,215 +989,66 @@ let quizOptions = [];
         }
 
         function nextCard() {
-    if (deck.length === 0) return;
-
-    if (currentIndex < deck.length - 1) {
-        currentIndex++;
-    } else {
-        currentIndex = 0;
-    }
-
-    updateCardDisplay();
-}
-        function prevCard() {
-    if (deck.length === 0) return;
-
-    if (currentIndex > 0) {
-        currentIndex--;
-    } else {
-        currentIndex = deck.length - 1;
-    }
-
-    updateCardDisplay();
-}
+            if (deck.length === 0) return;
+            if (currentIndex < deck.length - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0;
+            }
+            updateCardDisplay();
+        }
 
         function shuffleCards() {
-    if (deck.length === 0) return;
-
-    // Fisher-Yates shuffle
-    for (let i = deck.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-
-        [deck[i], deck[j]] =
-        [deck[j], deck[i]];
-    }
-
-    currentIndex = 0;
-
-    updateCardDisplay();
-}
-
-        function toggleMastered() {
-    // Jangan melakukan apa-apa kalau deck kosong
-    if (deck.length === 0) return;
-
-    const currentKanji = deck[currentIndex].kanji;
-
-    if (masteredSet.has(currentKanji)) {
-        // Sudah paham → kembalikan menjadi belum paham
-        masteredSet.delete(currentKanji);
-    } else {
-        // Belum paham → tandai sudah paham
-        masteredSet.add(currentKanji);
-    }
-
-    // Simpan ke localStorage
-    saveMasteredToStorage();
-
-    // Perbarui deck berdasarkan filter yang aktif
-    updateDeck();
-
-    // Kalau deck masih memiliki kartu
-    if (deck.length > 0) {
-
-        // Kalau kartu yang sedang dibuka sudah keluar dari
-        // filter, index disesuaikan
-        if (currentIndex >= deck.length) {
-            currentIndex = deck.length - 1;
+            if (deck.length === 0) return;
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+            currentIndex = 0;
+            updateCardDisplay();
         }
-    } else {
-        currentIndex = 0;
-    }
 
-    updateDeckCounts();
-    updateFilterButtons();
-    updateCardDisplay();
-    renderVocabGrid();
-}
+        // 4. Update Panel Statistik Automatic Calculation
+        function updateStatistics() {
+            const total = rawVocabData.length;
+            const mastered = rawVocabData.filter(item => srsData[item.kanji]?.status === "mastered").length;
+            const learning = rawVocabData.filter(item => srsData[item.kanji]?.status === "learning").length;
+            const newCards = total - mastered - learning;
+
+            const today = Date.now();
+            const dueToday = rawVocabData.filter(item => {
+                const card = srsData[item.kanji];
+                return card && card.due <= today;
+            }).length;
+
+            const progress = total > 0 ? ((mastered / total) * 100).toFixed(1) : 0;
+
+            document.getElementById("stat-total").textContent = total;
+            document.getElementById("stat-mastered").textContent = mastered;
+            document.getElementById("stat-learning").textContent = learning;
+            document.getElementById("stat-new").textContent = newCards;
+            document.getElementById("stat-due").textContent = dueToday;
+            document.getElementById("stat-progress").textContent = progress + "%";
+            document.getElementById("stat-progress-bar").style.width = progress + "%";
+        }
 
         function resetProgress() {
-    if (confirm('Apakah Anda yakin ingin mereset progres hafalan?')) {
-
-        // Semua menjadi belum dipahami
-        masteredSet.clear();
-
-        // Kembali ke semua kartu
-        currentDeckFilter = 'all';
-        deck = [...rawVocabData];
-        currentIndex = 0;
-
-        // Simpan
-        saveMasteredToStorage();
-
-        // Update tampilan
-        updateDeckCounts();
-        updateFilterButtons();
-        updateCardDisplay();
-        renderVocabGrid();
-    }
-}
-
-        function saveMasteredToStorage() {
-            localStorage.setItem('jp_kanji_mastered', JSON.stringify(Array.from(masteredSet)));
-        }
-
-        function loadMasteredFromStorage() {
-            const saved = localStorage.getItem('jp_kanji_mastered');
-            if (saved) {
-                try {
-                    masteredSet = new Set(JSON.parse(saved));
-                } catch(e) {
-                    masteredSet = new Set();
-                }
+            if (confirm('Apakah Anda yakin ingin mereset seluruh data SRS hafalan?')) {
+                srsData = {};
+                saveSRS();
+                currentDeckFilter = 'all';
+                updateDeck();
+                updateStatistics();
+                updateDeckCounts();
+                updateFilterButtons();
+                updateCardDisplay();
+                renderVocabGrid();
             }
         }
-        function changeDeckFilter(filter) {
-    currentDeckFilter = filter;
-    currentIndex = 0;
 
-    updateDeck();
-    updateFilterButtons();
-    updateCardDisplay();
-}
-        function updateDeck() {
-    if (currentDeckFilter === 'all') {
-        deck = [...rawVocabData];
-
-    } else if (currentDeckFilter === 'unmastered') {
-        deck = rawVocabData.filter(item => {
-            return !masteredSet.has(item.kanji);
-        });
-
-    } else if (currentDeckFilter === 'mastered') {
-        deck = rawVocabData.filter(item => {
-            return masteredSet.has(item.kanji);
-        });
-    }
-
-    // Supaya index tidak melebihi jumlah kartu
-    if (deck.length === 0) {
-        currentIndex = 0;
-    } else if (currentIndex >= deck.length) {
-        currentIndex = deck.length - 1;
-    }
-}
-function updateDeckCounts() {
-    const total = rawVocabData.length;
-
-    const masteredCount = rawVocabData.filter(item =>
-        masteredSet.has(item.kanji)
-    ).length;
-
-    const unmasteredCount = total - masteredCount;
-document.getElementById('vocab-total-header').textContent =
-    `Kosakata N2 (${total} Kata)`;
-    document.getElementById('count-all').textContent = total;
-    document.getElementById('count-unmastered').textContent = unmasteredCount;
-    document.getElementById('count-mastered').textContent = masteredCount;
-}
-        
-       function updateFilterButtons() {
-    const buttons = {
-        all: document.getElementById('filter-all'),
-        unmastered: document.getElementById('filter-unmastered'),
-        mastered: document.getElementById('filter-mastered')
-    };
-
-    Object.values(buttons).forEach(btn => {
-        btn.classList.remove(
-            'bg-indigo-600',
-            'text-white',
-            'shadow-md'
-        );
-
-        btn.classList.add(
-            'bg-slate-700/60',
-            'text-slate-300'
-        );
-    });
-
-    const active = buttons[currentDeckFilter];
-
-    active.classList.remove(
-        'bg-slate-700/60',
-        'text-slate-300'
-    );
-
-    active.classList.add(
-        'bg-indigo-600',
-        'text-white',
-        'shadow-md'
-    );
-}
-        
-        function setupKeyboardListeners() {
-            document.addEventListener('keydown', (e) => {
-                // Don't trigger if user is typing in search input
-                if (document.activeElement.tagName === 'INPUT') return;
-
-                if (e.code === 'Space') {
-                    e.preventDefault();
-                    flipCard();
-                } else if (e.code === 'ArrowRight') {
-                    nextCard();
-                } else if (e.code === 'ArrowLeft') {
-                    prevCard();
-                }
-            });
-        }
-
+        // Navigation Tabs Control
         function switchTab(tabName) {
-            const tabs = ['cards', 'list', 'quiz'];
+            const tabs = ['cards', 'stats', 'list', 'quiz'];
             tabs.forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 const btn = document.getElementById(`tab-${t}-btn`);
@@ -1182,11 +1063,28 @@ document.getElementById('vocab-total-header').textContent =
                 }
             });
 
-            if (tabName === 'quiz') {
+            if (tabName === 'stats') {
+                updateStatistics();
+            } else if (tabName === 'quiz') {
                 initQuiz();
+            } else if (tabName === 'list') {
+                renderVocabGrid();
             }
         }
 
+        // Keyboard Shortcut Handler
+        function setupKeyboardListeners() {
+            document.addEventListener('keydown', (e) => {
+                if (document.activeElement.tagName === 'INPUT') return;
+
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    flipCard();
+                }
+            });
+        }
+
+        // Render Vocab List with SRS Indicators
         function renderVocabGrid(filterText = '') {
             const gridEl = document.getElementById('vocab-grid');
             gridEl.innerHTML = '';
@@ -1204,25 +1102,32 @@ document.getElementById('vocab-total-header').textContent =
             }
 
             filtered.forEach(item => {
-                const isMastered = masteredSet.has(item.kanji);
-                const card = document.createElement('div');
-                card.className = `p-3.5 rounded-xl border ${isMastered ? 'border-emerald-500/40 bg-emerald-950/20' : 'border-slate-700/60 bg-slate-900/60'} flex items-center justify-between transition-all hover:border-indigo-500/50`;
-                card.innerHTML = `
+                const card = srsData[item.kanji];
+                let statusBadge = '<span class="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">⚪ Baru</span>';
+                
+                if (card) {
+                    if (card.status === 'mastered') {
+                        statusBadge = '<span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded">🟢 Dikuasai</span>';
+                    } else {
+                        statusBadge = '<span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded">🟡 Belajar</span>';
+                    }
+                }
+
+                const cardEl = document.createElement('div');
+                cardEl.className = `p-3.5 rounded-xl border ${card?.status === 'mastered' ? 'border-emerald-500/40 bg-emerald-950/20' : 'border-slate-700/60 bg-slate-900/60'} flex items-center justify-between transition-all hover:border-indigo-500/50`;
+                cardEl.innerHTML = `
                     <div class="flex items-center space-x-3">
                         <span class="font-japanese text-2xl font-bold text-white w-10 text-center">${item.kanji}</span>
                         <div>
                             <div class="flex items-center space-x-2">
                                 <span class="font-japanese text-sm font-semibold text-rose-400">${item.reading}</span>
-                                ${isMastered
-    ? '<span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded">🟢 Paham</span>'
-    : '<span class="text-[10px] bg-rose-500/20 text-rose-300 px-1.5 py-0.5 rounded">🔴 Belum Paham</span>'
-}
+                                ${statusBadge}
                             </div>
                             <p class="text-xs text-slate-300 capitalize">${item.meaning}</p>
                         </div>
                     </div>
                 `;
-                gridEl.appendChild(card);
+                gridEl.appendChild(cardEl);
             });
         }
 
@@ -1231,6 +1136,7 @@ document.getElementById('vocab-total-header').textContent =
             renderVocabGrid(input);
         }
 
+        // Quiz System Integration
         function initQuiz() {
             currentQuizIndex = 0;
             quizScore = 0;
@@ -1240,7 +1146,6 @@ document.getElementById('vocab-total-header').textContent =
         function renderQuizQuestion() {
             const container = document.getElementById('quiz-container');
             if (currentQuizIndex >= 10) {
-                // Quiz completed
                 container.innerHTML = `
                     <div class="text-center py-6 space-y-4">
                         <div class="w-16 h-16 bg-indigo-600/20 text-indigo-400 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
@@ -1256,10 +1161,7 @@ document.getElementById('vocab-total-header').textContent =
                 return;
             }
 
-            // Pick random item for question
             const questionItem = rawVocabData[Math.floor(Math.random() * rawVocabData.length)];
-            
-            // Generate 3 wrong distractors
             let distractors = [];
             while (distractors.length < 3) {
                 const rand = rawVocabData[Math.floor(Math.random() * rawVocabData.length)];
@@ -1282,7 +1184,7 @@ document.getElementById('vocab-total-header').textContent =
                 </div>
 
                 <div class="grid grid-cols-1 gap-2.5">
-                    ${options.map((opt, idx) => `
+                    ${options.map((opt) => `
                         <button onclick="checkQuizAnswer(this, '${opt.kanji}', '${questionItem.kanji}')" class="w-full text-left p-3.5 bg-slate-700/50 hover:bg-slate-700 text-slate-200 border border-slate-600/60 rounded-xl font-medium text-sm flex items-center justify-between transition-all">
                             <span>${opt.reading} (${opt.meaning})</span>
                             <i class="fa-regular fa-circle text-slate-500"></i>
@@ -1293,7 +1195,6 @@ document.getElementById('vocab-total-header').textContent =
         }
 
         function checkQuizAnswer(buttonEl, selectedKanji, correctKanji) {
-            // Disable all option buttons
             const buttons = buttonEl.parentElement.querySelectorAll('button');
             buttons.forEach(b => b.disabled = true);
 
@@ -1316,4 +1217,3 @@ document.getElementById('vocab-total-header').textContent =
     </script>
 </body>
 </html>
-```
