@@ -135,7 +135,7 @@
             <div class="w-full bg-slate-800/80 p-4 rounded-2xl border border-slate-700/60 mb-6 backdrop-blur-sm">
                 <div class="flex justify-between items-center text-xs font-semibold text-slate-400 mb-2">
                     <span id="card-counter">Kartu 1 dari 0</span>
-                    <span id="card-type-label" class="text-indigo-400 bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-500/30">Tipe A: Kanji → Reading</span>
+                    <span id="card-status-badge" class="bg-slate-800 border border-slate-700 px-2 py-0.5 rounded text-[10px]">Baru</span>
                 </div>
                 <div class="w-full bg-slate-700 h-2.5 rounded-full overflow-hidden">
                     <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-rose-500 h-full w-0 transition-all duration-300"></div>
@@ -146,50 +146,43 @@
             <div class="w-full h-80 sm:h-96 perspective-1000 cursor-pointer group" onclick="flipCard()">
                 <div id="flashcard" class="relative w-full h-full transform-style-3d shadow-2xl rounded-3xl border border-slate-700/80 bg-slate-800/90">
                     
-                    <!-- FRONT SIDE -->
+                    <!-- FRONT SIDE (KANJI) -->
                     <div class="absolute inset-0 w-full h-full backface-hidden flex flex-col justify-between p-6 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 rounded-3xl border border-slate-700">
                         <div class="flex justify-between items-center text-xs text-slate-400 font-mono">
-                            <span id="card-front-tag" class="bg-slate-700/60 px-2.5 py-1 rounded-md text-slate-300">Pertanyaan</span>
-                            <span id="card-status-badge" class="bg-slate-800 border border-slate-700 px-2 py-0.5 rounded text-[10px]">Baru</span>
+                            <span class="bg-slate-700/60 px-2.5 py-1 rounded-md text-slate-300">Depan (Kanji)</span>
                         </div>
                         
                         <div class="flex flex-col items-center justify-center text-center my-auto">
-                            <span id="card-front-main" class="font-japanese text-6xl sm:text-7xl font-black text-white tracking-widest drop-shadow-md group-hover:scale-105 transition-transform">
+                            <span id="card-kanji" class="font-japanese text-7xl sm:text-8xl font-black text-white tracking-widest drop-shadow-md group-hover:scale-105 transition-transform">
                                 —
-                            </span>
-                            <span id="card-front-sub" class="text-slate-400 text-sm mt-3 hidden font-japanese">
-                                
                             </span>
                         </div>
 
                         <div class="flex items-center justify-center text-slate-400 text-xs gap-1.5">
                             <i class="fa-solid fa-rotate text-indigo-400 animate-spin-slow"></i>
-                            <span>Klik atau tekan [Spasi] untuk melihat jawaban</span>
+                            <span>Klik atau tekan [Spasi] untuk balik</span>
                         </div>
                     </div>
 
-                    <!-- BACK SIDE -->
+                    <!-- BACK SIDE (HIRAGANA & MEANING) -->
                     <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 flex flex-col justify-between p-6 bg-gradient-to-br from-indigo-950/60 via-slate-900 to-slate-900 rounded-3xl border border-indigo-500/30">
                         <div class="flex justify-between items-center text-xs text-slate-400 font-mono">
-                            <span class="bg-indigo-500/20 text-indigo-300 px-2.5 py-1 rounded-md border border-indigo-500/30">Jawaban</span>
+                            <span class="bg-indigo-500/20 text-indigo-300 px-2.5 py-1 rounded-md border border-indigo-500/30">Belakang (Baca & Arti)</span>
                         </div>
                         
-                        <div class="flex flex-col items-center justify-center text-center my-auto space-y-2">
-                            <span id="card-back-main" class="font-japanese text-3xl sm:text-4xl font-bold text-rose-400">
+                        <div class="flex flex-col items-center justify-center text-center my-auto space-y-3">
+                            <span id="card-reading" class="font-japanese text-3xl sm:text-4xl font-bold text-rose-400">
                                 —
                             </span>
                             <div class="h-0.5 w-16 bg-slate-700 my-1"></div>
-                            <span id="card-back-meaning" class="text-lg sm:text-xl font-bold text-slate-100">
+                            <span id="card-meaning" class="text-xl sm:text-2xl font-bold text-slate-100">
                                 —
                             </span>
-                            <div id="card-back-extra" class="text-xs text-slate-400 font-japanese mt-2 bg-slate-800/80 p-2 rounded-lg border border-slate-700/50 w-full">
-                                
-                            </div>
                         </div>
 
                         <div class="flex items-center justify-center text-slate-400 text-xs gap-1.5">
                             <i class="fa-solid fa-lightbulb text-amber-400"></i>
-                            <span id="card-back-footer">Evaluasi hafalanmu di bawah</span>
+                            <span id="card-kanji-sub">Kanji: —</span>
                         </div>
                     </div>
 
@@ -199,7 +192,7 @@
             <!-- SRS Rating Controls Toolbar -->
             <div class="w-full flex flex-col gap-4 mt-6">
                 
-                <div class="text-xs text-center text-slate-400 font-medium">Baimana tingkat kesulitannya?</div>
+                <div class="text-xs text-center text-slate-400 font-medium">Bagaimana tingkat kesulitannya?</div>
 
                 <!-- SRS Rating Buttons -->
                 <div class="grid grid-cols-4 gap-2">
@@ -237,7 +230,7 @@
 
             <!-- Keyboard Guide -->
             <div class="mt-6 text-center text-slate-500 text-xs hidden sm:block">
-                <p><span class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300 font-mono">Spasi</span> Balik Kartu | Evaluasi memajukan kartu otomatis</p>
+                <p><span class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300 font-mono">Spasi</span> Balik Kartu</p>
             </div>
 
         </div>
@@ -327,13 +320,12 @@
     </footer>
 
     <script>
-        // Data vocabulary lengkap (termasuk contoh kalimat & sinonim untuk Multi-type cards)
+        // Data vocabulary
         const rawVocabData = [
-            { kanji: "相当", reading: "そうとう", meaning: "setara / sebanding / lumayan", example: "相当難しい問題です。", exampleReading: "そうとう むずかしい もんだいです。", exampleMeaning: "Soal ini cukup sulit.", similar: "かなり" },
-            { kanji: "穴", reading: "あな", meaning: "lubang", example: "壁に穴を開ける。", exampleReading: "かべに あなを あける。", exampleMeaning: "Membuat lubang di dinding." },
-            { kanji: "油", reading: "あぶら", meaning: "minyak", example: "フライパンに油をひく。", exampleReading: "ふらいぱんに あぶらを ひく。", exampleMeaning: "Menuangkan minyak ke wajan." },
-            { kanji: "胃", reading: "い", meaning: "lambung / perut", example: "胃が痛いです。", exampleReading: "いが いたい です。", exampleMeaning: "Perut/lambung saya sakit." },
-            { kanji: "息", reading: "いき", meaning: "napas", example: "深く息を吸う。", exampleReading: "ふかく いきを すう。", exampleMeaning: "Menaikkan/menarik napas dalam-dalam." },
+            { kanji: "穴", reading: "あな", meaning: "lubang" },
+            { kanji: "油", reading: "あぶら", meaning: "minyak" },
+            { kanji: "胃", reading: "い", meaning: "lambung / perut" },
+            { kanji: "息", reading: "いき", meaning: "napas" },
             { kanji: "裏", reading: "うら", meaning: "bagian belakang / sisi dalam" },
             { kanji: "噂", reading: "うわさ", meaning: "rumor / gosip" },
             { kanji: "餌", reading: "えさ", meaning: "umpan / makanan hewan" },
@@ -647,6 +639,7 @@
             { kanji: "送信", reading: "そうしん", meaning: "pengiriman (pesan/data)" },
             { kanji: "想像", reading: "そうぞう", meaning: "imajinasi / membayangkan" },
             { kanji: "早朝", reading: "そうちょう", meaning: "pagi-pagi sekali / dini hari" },
+            { kanji: "相当", reading: "そうとう", meaning: "setara / sebanding / lumayan" },
             { kanji: "送料", reading: "そうりょう", meaning: "ongkos kirim (ongkir)" },
             { kanji: "外側", reading: "そとがわ", meaning: "bagian luar / sisi luar" },
             { kanji: "尊敬", reading: "そんけい", meaning: "rasa hormat / menghormati" },
@@ -698,7 +691,6 @@
         let currentIndex = 0;
         let isFlipped = false;
         let currentDeckFilter = 'all'; // all, due, new, learning, mastered
-        let currentCardType = 'A'; // A, B, C, D
 
         // Quiz Variables
         let currentQuizIndex = 0;
@@ -706,16 +698,12 @@
 
         // DOM Elements
         const flashcardEl = document.getElementById('flashcard');
-        const cardFrontTagEl = document.getElementById('card-front-tag');
-        const cardStatusBadgeEl = document.getElementById('card-status-badge');
-        const cardFrontMainEl = document.getElementById('card-front-main');
-        const cardFrontSubEl = document.getElementById('card-front-sub');
-        const cardBackMainEl = document.getElementById('card-back-main');
-        const cardBackMeaningEl = document.getElementById('card-back-meaning');
-        const cardBackExtraEl = document.getElementById('card-back-extra');
-        const cardBackFooterEl = document.getElementById('card-back-footer');
+        const cardKanjiEl = document.getElementById('card-kanji');
+        const cardReadingEl = document.getElementById('card-reading');
+        const cardMeaningEl = document.getElementById('card-meaning');
+        const cardKanjiSubEl = document.getElementById('card-kanji-sub');
         const cardCounterEl = document.getElementById('card-counter');
-        const cardTypeLabelEl = document.getElementById('card-type-label');
+        const cardStatusBadgeEl = document.getElementById('card-status-badge');
         const progressBarEl = document.getElementById('progress-bar');
 
         // Initial Launch
@@ -746,7 +734,7 @@
             localStorage.setItem('jp_n2_srs_data', JSON.stringify(srsData));
         }
 
-        // 2. SRS Algorithm & Interval Calculator
+        // SRS Algorithm & Interval Calculator
         function reviewCard(rating) {
             if (deck.length === 0) return;
 
@@ -877,19 +865,17 @@
             document.getElementById('vocab-total-header').textContent = `Kosakata N2 (${total} Kata)`;
         }
 
-        // 3. Render Card Display (Multi-Type Cards Support)
+        // Render Card Display (Kanji -> Reading & Meaning saja)
         function updateCardDisplay() {
             if (deck.length === 0) {
                 isFlipped = false;
                 flashcardEl.classList.remove('rotate-y-180');
-                cardFrontTagEl.textContent = 'Kosong';
-                cardStatusBadgeEl.textContent = '—';
-                cardFrontMainEl.textContent = '—';
-                cardFrontSubEl.classList.add('hidden');
-                cardBackMainEl.textContent = '—';
-                cardBackMeaningEl.textContent = 'Tidak ada kartu pada deck ini';
-                cardBackExtraEl.innerHTML = '';
+                cardKanjiEl.textContent = '—';
+                cardReadingEl.textContent = '—';
+                cardMeaningEl.textContent = 'Tidak ada kartu pada deck ini';
+                cardKanjiSubEl.textContent = 'Belum ada kartu';
                 cardCounterEl.textContent = '0 / 0';
+                cardStatusBadgeEl.textContent = '—';
                 progressBarEl.style.width = '0%';
                 return;
             }
@@ -913,64 +899,11 @@
                 cardStatusBadgeEl.className = 'bg-amber-950/60 border border-amber-500/40 text-amber-400 px-2 py-0.5 rounded text-[10px]';
             }
 
-            // Randomize atau pilih tipe kartu (Tipe A, B, C, D) berdasarkan kelengkapan data
-            const availableTypes = ['A', 'B'];
-            if (item.similar) availableTypes.push('C');
-            if (item.example) availableTypes.push('D');
-
-            currentCardType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
-
-            cardFrontSubEl.classList.add('hidden');
-            cardBackExtraEl.innerHTML = '';
-
-            if (currentCardType === 'A') {
-                // Tipe A — Kanji → Reading + Arti
-                cardTypeLabelEl.textContent = "Tipe A: Kanji → Reading";
-                cardFrontTagEl.textContent = "Soal Kanji";
-                cardFrontMainEl.textContent = item.kanji;
-                
-                cardBackMainEl.textContent = item.reading;
-                cardBackMeaningEl.textContent = item.meaning;
-                if (item.example) {
-                    cardBackExtraEl.innerHTML = `<div class="text-indigo-300 font-semibold mb-0.5">${item.example}</div><div>${item.exampleMeaning}</div>`;
-                }
-            } else if (currentCardType === 'B') {
-                // Tipe B — Reading → Kanji + Arti
-                cardTypeLabelEl.textContent = "Tipe B: Reading → Kanji";
-                cardFrontTagEl.textContent = "Cara Baca (Hiragana)";
-                cardFrontMainEl.textContent = item.reading;
-
-                cardBackMainEl.textContent = item.kanji;
-                cardBackMeaningEl.textContent = item.meaning;
-            } else if (currentCardType === 'C') {
-                // Tipe C — Sinonim / Konteks
-                cardTypeLabelEl.textContent = "Tipe C: Sinonim/Konteks";
-                cardFrontTagEl.textContent = "Persamaan Kata";
-                cardFrontMainEl.textContent = `「${item.similar}」`;
-                cardFrontSubEl.textContent = "Kata mana yang memiliki makna mirip?";
-                cardFrontSubEl.classList.remove('hidden');
-
-                cardBackMainEl.textContent = `${item.kanji} (${item.reading})`;
-                cardBackMeaningEl.textContent = item.meaning;
-            } else if (currentCardType === 'D') {
-                // Tipe D — Contoh Kalimat
-                cardTypeLabelEl.textContent = "Tipe D: Baca Dalam Kalimat";
-                cardFrontTagEl.textContent = "Contoh Kalimat";
-                
-                // Sensor kata sasaran dalam kalimat
-                const maskedExample = item.example.replace(item.kanji, " ____ ");
-                cardFrontMainEl.textContent = maskedExample;
-                cardFrontMainEl.className = "font-japanese text-2xl sm:text-3xl font-bold text-white tracking-normal leading-relaxed";
-
-                cardBackMainEl.textContent = `${item.kanji} [${item.reading}]`;
-                cardBackMeaningEl.textContent = item.meaning;
-                cardBackExtraEl.innerHTML = `<div class="text-indigo-300 font-semibold mb-0.5">${item.exampleReading}</div><div>${item.exampleMeaning}</div>`;
-            }
-
-            // Kembalikan class default jika tipe bukan D
-            if (currentCardType !== 'D') {
-                cardFrontMainEl.className = "font-japanese text-6xl sm:text-7xl font-black text-white tracking-widest drop-shadow-md group-hover:scale-105 transition-transform";
-            }
+            // Isi konten kartu
+            cardKanjiEl.textContent = item.kanji;
+            cardReadingEl.textContent = item.reading;
+            cardMeaningEl.textContent = item.meaning;
+            cardKanjiSubEl.textContent = `Kanji: ${item.kanji} (${item.reading})`;
 
             // Update Counter & Progress
             cardCounterEl.textContent = `Kartu ${currentIndex + 1} dari ${deck.length}`;
@@ -1008,7 +941,7 @@
             updateCardDisplay();
         }
 
-        // 4. Update Panel Statistik Automatic Calculation
+        // Update Panel Statistik Automatic Calculation
         function updateStatistics() {
             const total = rawVocabData.length;
             const mastered = rawVocabData.filter(item => srsData[item.kanji]?.status === "mastered").length;
