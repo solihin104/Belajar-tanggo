@@ -198,7 +198,7 @@
                 <div class="grid grid-cols-4 gap-2">
                     <button onclick="reviewCard('again')" class="bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 py-2.5 rounded-xl font-semibold flex flex-col items-center justify-center transition-all active:scale-95">
                         <span class="text-sm">🔴 Lupa</span>
-                        <span class="text-[10px] text-rose-400/80 mt-0.5">10 mnt</span>
+                        <span class="text-[10px] text-rose-400/80 mt-0.5">5 mnt</span>
                     </button>
 
                     <button onclick="reviewCard('hard')" class="bg-amber-950/40 hover:bg-amber-900/60 text-amber-300 border border-amber-800/60 py-2.5 rounded-xl font-semibold flex flex-col items-center justify-center transition-all active:scale-95">
@@ -1107,7 +1107,7 @@
 
             if (rating === "again") {
                 card.interval = 0;
-                card.due = Date.now() + (10 * 60 * 1000); // 10 menit
+                card.due = Date.now() + (5 * 60 * 1000); // 10 menit
                 card.status = "learning";
             } else if (rating === "hard") {
                 card.interval = Math.max(1, card.interval);
